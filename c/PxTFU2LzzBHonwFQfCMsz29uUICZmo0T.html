@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<base href="../"><script>window.__CLIENT__={"updated":1792444167574,"project":{"id":"2o562p6g3h50","name":"Тетраэдр"},"entries":[{"id":"39091r655s3c","date":"2026-10-20","type":"reels","status":"ready","title":"TRX","time":""}]};</script>
+<base href="../"><script>window.__CLIENT__={"updated":1793130550602,"project":{"id":"2o562p6g3h50","name":"Тетраэдр","plan":"","planLink":""},"entries":[{"id":"39091r655s3c","date":"2026-10-20","type":"reels","status":"ready","title":"TRX","time":""}],"items":[]};</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Тетраэдр — контент-план</title>
@@ -137,6 +137,8 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .hint.warn{color:var(--danger)}
 .pm-add{display:flex;gap:8px;margin:16px 0}
 .pm-foot{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
+.chk{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--ink);font-weight:500;margin-bottom:14px;cursor:pointer}
+.chk input{width:auto;margin:0}
 
 /* setup */
 .setup{max-width:520px;margin:6vh auto;padding:0 16px}
@@ -149,8 +151,46 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 #printSheet{display:none}
 
+/* tabs & extra views */
+.top{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:16px}
+.top .spacer{flex:1}
+.top .brand{font-size:20px;font-weight:650;color:var(--ink);margin:0;letter-spacing:-.01em}
+.tabs{display:flex;gap:3px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;border-radius:7px;padding:7px 12px;font-weight:500;font-size:14px;color:var(--muted);white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tab .cnt{font-size:12px;margin-left:5px;opacity:.8}
+.tab .cnt:empty{display:none}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;max-width:860px;display:flex;flex-direction:column;gap:14px}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sheet-head h2{margin:0;font-size:22px;font-weight:650;letter-spacing:-.01em}
+a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:center}
+.plan-ta{min-height:55vh;font-size:16px;line-height:1.55}
+.md{font-size:16px;line-height:1.55;overflow-wrap:anywhere}
+.md h3{font-size:18px;margin:14px 0 4px;font-weight:650}
+.md h3:first-child{margin-top:0}
+.md p{margin:0 0 2px}
+.md ul{margin:2px 0 6px;padding-left:22px}
+.md .sp{height:10px}
+.md a{color:var(--accent)}
+.it-form{display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line);padding-bottom:16px}
+#itName{font-weight:600}
+.it-list{display:flex;flex-direction:column;gap:8px}
+.it{border:1px solid var(--line);border-left:4px solid var(--c-carousel);border-radius:8px;padding:10px 12px}
+.it.ready{border-left-color:var(--accent)}
+.it.cur{box-shadow:0 0 0 2px var(--accent)}
+.it-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.it-top b{font-weight:600;overflow-wrap:anywhere}
+.it-date{font-size:12.5px;color:var(--muted);white-space:nowrap}
+.it-text{font-size:14px;color:var(--muted);margin-top:4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.it-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+
 @media (max-width:700px){
   .wrap{padding:14px 10px 40px}
+  .top .spacer{display:none}
+  .sheet{padding:14px}
+  .plan-ta{min-height:50vh}
   h1{font-size:21px;min-width:0;margin-right:4px}
   .bar{margin-bottom:12px}
   .dow div{padding:7px 2px;text-align:center;font-size:12px}
@@ -189,24 +229,66 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 </div>
 
 <div class="wrap" id="app" hidden>
-  <div class="brand" id="brand" hidden></div>
-  <div class="bar">
-    <div class="nav">
-      <select class="proj adm" id="projSel" aria-label="Проект"></select>
-      <h1 id="title"></h1>
-      <button class="btn sq" id="prev" aria-label="Предыдущий месяц">‹</button>
-      <button class="btn sq" id="next" aria-label="Следующий месяц">›</button>
-      <button class="btn" id="today">Сегодня</button>
-      <button class="btn" id="print">Распечатать</button>
-      <button class="btn adm" id="mgr">Проекты и ссылки</button>
-      <span class="sync" id="sync"></span>
+  <div class="top">
+    <select class="proj adm" id="projSel" aria-label="Проект"></select>
+    <div class="brand" id="brand" hidden></div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Разделы">
+      <button class="tab" role="tab" data-tab="cal">Календарь</button>
+      <button class="tab" role="tab" data-tab="plan">Контент-план</button>
+      <button class="tab" role="tab" data-tab="shoot">Съёмки<span class="cnt" id="cntShoot"></span></button>
+      <button class="tab" role="tab" data-tab="ready">Готовые ролики<span class="cnt" id="cntReady"></span></button>
     </div>
-    <div class="legend" id="legend" role="group" aria-label="Фильтр по типу"></div>
+    <span class="spacer"></span>
+    <span class="sync" id="sync"></span>
+    <button class="btn adm" id="mgr">Проекты и ссылки</button>
   </div>
-  <div class="cal">
-    <div class="dow"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div>
-    <div class="days" id="days"></div>
-  </div>
+
+  <section id="vCal">
+    <div class="bar">
+      <div class="nav">
+        <h1 id="title"></h1>
+        <button class="btn sq" id="prev" aria-label="Предыдущий месяц">‹</button>
+        <button class="btn sq" id="next" aria-label="Следующий месяц">›</button>
+        <button class="btn" id="today">Сегодня</button>
+        <button class="btn" id="print">Распечатать</button>
+      </div>
+      <div class="legend" id="legend" role="group" aria-label="Фильтр по типу"></div>
+    </div>
+    <div class="cal">
+      <div class="dow"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div>
+      <div class="days" id="days"></div>
+    </div>
+  </section>
+
+  <section id="vPlan" hidden>
+    <div class="sheet">
+      <div class="sheet-head">
+        <h2>Контент-план</h2>
+        <a class="btn sm" id="planOpen" target="_blank" rel="noopener" hidden>Открыть ссылку ↗</a>
+      </div>
+      <textarea class="adm plan-ta" id="planText" placeholder="Сценарии, рубрики, идеи. Можно писать: # Заголовок, - пункт списка, **жирный**."></textarea>
+      <label class="adm">Ссылка (необязательно), например на Notion<input id="planLink" type="url" placeholder="https://"></label>
+      <div class="md" id="planView" hidden></div>
+      <div class="hint adm">Сохраняется сам. Клиент видит этот текст по своей ссылке.</div>
+    </div>
+  </section>
+
+  <section id="vItems" hidden>
+    <div class="sheet">
+      <div class="sheet-head"><h2 id="itTitle"></h2></div>
+      <div class="it-form adm" id="itForm">
+        <input id="itName" type="text" autocomplete="off">
+        <div class="row2"><label>Дата<input id="itDate" type="date"></label><span></span></div>
+        <textarea id="itText" rows="3" placeholder="Комментарий (необязательно)"></textarea>
+        <div class="actions">
+          <button class="btn primary" id="itSave">Добавить</button>
+          <button class="btn" id="itCancel" hidden>Отмена</button>
+          <button class="btn danger" id="itDel" hidden>Удалить</button>
+        </div>
+      </div>
+      <div class="it-list" id="itList"></div>
+    </div>
+  </section>
 </div>
 
 <div id="printSheet" aria-hidden="true"></div>
@@ -246,6 +328,7 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
     <h2>Проекты и ссылки для клиентов</h2>
     <button class="btn sq" id="pmClose" aria-label="Закрыть">✕</button>
   </div>
+  <label class="chk"><input type="checkbox" id="pmAuto"> Обновлять ссылки клиентов автоматически</label>
   <div id="pmBody"></div>
   <div class="pm-add">
     <input id="pmNew" type="text" autocomplete="off" placeholder="Название нового проекта">
@@ -327,6 +410,10 @@ var sel=null, editId=null, delArmed=false, lastType="post";
 var draft={};
 var readOnly=!!CLIENT;
 var busy={}, armedDel={}, pjMsg={};
+var autoTimer=null, AUTO_DELAY=window.__AUTO_DELAY||20000;
+var tab=CLIENT?"cal":(lsGet("kalendar:tab")||"cal");
+if(["cal","plan","shoot","ready"].indexOf(tab)<0)tab="cal";
+var itEdit=null, itDelArmed=false, planTimer=null, planPid=null, planShownFor=null;
 
 function curProject(){
   var p=data.projects.filter(function(x){return x.id===activeProj})[0];
@@ -387,7 +474,8 @@ function setSync(kind,msg){
 }
 
 /* ---------- data layer ---------- */
-function emptyData(){return {v:1,projects:[{id:uid(),name:"Основной проект",token:null}],entries:[]}}
+function emptyData(){return {v:1,projects:[{id:uid(),name:"Основной проект",token:null}],entries:[],items:[]}}
+function items(){return data.items||(data.items=[])}
 function cacheLocal(){lsSet(LS_DATA,JSON.stringify(data))}
 function mutate(fn){
   fn(data);
@@ -395,6 +483,7 @@ function mutate(fn){
   cacheLocal();
   render();renderList();
   scheduleSave();
+  scheduleAutoPublish(AUTO_DELAY);
 }
 function scheduleSave(){
   setSync("ok","Сохраняю…");
@@ -464,6 +553,7 @@ async function loadRemote(){
   }
   if(!data.projects||!data.projects.length)data.projects=[{id:uid(),name:"Основной проект",token:null}];
   if(!data.entries)data.entries=[];
+  if(!data.items)data.items=[];
   cacheLocal();
 }
 var lastCheck=0;
@@ -544,6 +634,7 @@ function render(){
     html+='<div class="'+cls+'" data-date="'+k+'"'+style+'>'+inner+'</div>';
   }
   $("days").innerHTML=html;
+  renderView();
 }
 function renderLegend(){
   $("legend").innerHTML=TYPES.map(function(t){
@@ -735,9 +826,14 @@ function clientEntries(pid){
     return {id:e.id,date:e.date,type:e.type,status:e.status,title:e.title||"",time:e.time||""};
   }).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:byTime(a,b)});
 }
+function clientItems(pid){
+  return items().filter(function(x){return x.project===pid}).map(function(x){
+    return {id:x.id,kind:x.kind,title:x.title||"",date:x.date||"",text:x.text||""};
+  });
+}
 function clientSig(pid){
   var p=project(pid);
-  return djb(JSON.stringify([p?p.name:"",clientEntries(pid)]));
+  return djb(JSON.stringify([p?p.name:"",clientEntries(pid),p?(p.plan||""):"",p?(p.planLink||""):"",clientItems(pid)]));
 }
 function clientUrl(token){return siteBase()+"c/"+token+".html"}
 async function buildClientHtml(pid){
@@ -746,14 +842,14 @@ async function buildClientHtml(pid){
   var src=await r.text();
   var marker="<!--CLIENT"+"_DATA-->";
   if(src.indexOf(marker)<0)throw new Error("Не удалось прочитать страницу приложения");
-  var payload={updated:Date.now(),project:{id:p.id,name:p.name},entries:clientEntries(pid)};
+  var payload={updated:Date.now(),project:{id:p.id,name:p.name,plan:p.plan||"",planLink:p.planLink||""},entries:clientEntries(pid),items:clientItems(pid)};
   var json=JSON.stringify(payload).replace(/</g,"\\u003c");
   var inject='<base href="../"><'+'script>window.__CLIENT__='+json+';<'+'/script>';
   var html=src.replace(marker,function(){return inject});
   html=html.replace(/<title>[^<]*<\/title>/,function(){return "<title>"+esc(p.name)+" — контент-план</title>"});
   return html;
 }
-async function publishClient(pid,reissue){
+async function publishClient(pid,reissue,auto){
   if(busy[pid])return;
   busy[pid]=true;pjMsg[pid]="";renderMgr();
   try{
@@ -770,11 +866,29 @@ async function publishClient(pid,reissue){
       var q=d.projects.filter(function(x){return x.id===pid})[0];
       if(q){q.token=token;q.publishedAt=now;q.pubSig=sig}
     });
-    pjMsg[pid]="Готово. Страница на GitHub обновится у клиента в течение минуты.";
+    pjMsg[pid]=auto?"Обновлено автоматически. Клиент увидит новый план в течение минуты.":"Готово. Страница на GitHub обновится у клиента в течение минуты.";
   }catch(e){
     pjMsg[pid]="warn:"+((e&&e.status===404)?"Репозиторий сайта не найден или у ключа нет доступа к нему.":(e&&e.message)||"Не получилось");
+    if(auto)scheduleAutoPublish(300000);
   }
   busy[pid]=false;renderMgr();
+}
+function stalePublished(){
+  return data.projects.filter(function(p){return p.token&&p.pubSig!==clientSig(p.id)});
+}
+function scheduleAutoPublish(delay){
+  if(CLIENT||!cfg||data.autoPublish===false)return;
+  clearTimeout(autoTimer);
+  autoTimer=setTimeout(runAutoPublish,delay);
+}
+async function runAutoPublish(){
+  if(CLIENT||!cfg||data.autoPublish===false)return;
+  if(saving||pending.length){scheduleAutoPublish(5000);return}
+  var list=stalePublished();
+  for(var i=0;i<list.length;i++){
+    if(busy[list[i].id])continue;
+    await publishClient(list[i].id,false,true);
+  }
 }
 async function unpublishClient(pid){
   if(busy[pid])return;
@@ -800,6 +914,7 @@ function fmtDT(ts){
 }
 function renderMgr(){
   if(CLIENT)return;
+  $("pmAuto").checked=data.autoPublish!==false;
   var html=data.projects.map(function(p){
     var b=!!busy[p.id];
     var link="";
@@ -812,10 +927,10 @@ function renderMgr(){
         +'<button class="btn sm pj-new" data-id="'+esc(p.id)+'"'+(b?" disabled":"")+'>Новая ссылка</button>'
         +'<button class="btn sm danger pj-off" data-id="'+esc(p.id)+'"'+(b?" disabled":"")+'>Отключить</button>'
         +'</div>'
-        +'<div class="hint'+(changed?" warn":"")+'">'+(changed?"В календаре есть изменения, которых клиент ещё не видит. Нажми «Обновить для клиента».":"Клиент видит актуальный план"+(p.publishedAt?" (обновлено "+fmtDT(p.publishedAt)+")":"")+".")+'</div>';
+        +'<div class="hint'+(changed?" warn":"")+'">'+(changed?(data.autoPublish!==false?"Есть изменения: клиенту обновится автоматически в течение минуты.":"В календаре есть изменения, которых клиент ещё не видит. Нажми «Обновить для клиента».")  :"Клиент видит актуальный план"+(p.publishedAt?" (обновлено "+fmtDT(p.publishedAt)+")":"")+".")+'</div>';
     }else{
       link='<div class="pj-btns"><button class="btn sm primary pj-pub" data-id="'+esc(p.id)+'"'+(b?" disabled":"")+'>'+(b?"Создаю…":"Создать ссылку для клиента")+'</button></div>'
-        +'<div class="hint">Клиент увидит только форматы, названия, даты и статусы. Заметки в ссылку не попадают.</div>';
+        +'<div class="hint">Клиент увидит календарь (без заметок к записям), контент-план, съёмки и готовые ролики.</div>';
     }
     var m=pjMsg[p.id]||"";
     var msg=m?'<div class="hint'+(m.indexOf("warn:")===0?" warn":"")+'">'+esc(m.replace(/^warn:/,""))+'</div>':"";
@@ -843,6 +958,112 @@ function exportData(){
   setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
 }
 
+/* ---------- tabs: plan / shoots / ready ---------- */
+function mdLite(src){
+  var lines=String(src||"").split("\n"),out=[],inList=false;
+  function inline(t){
+    return esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  }
+  lines.forEach(function(l){
+    var m;
+    if(/^\s*[-•*]\s+/.test(l)){
+      if(!inList){out.push("<ul>");inList=true}
+      out.push("<li>"+inline(l.replace(/^\s*[-•*]\s+/,""))+"</li>");return;
+    }
+    if(inList){out.push("</ul>");inList=false}
+    if((m=l.match(/^#{1,3}\s+(.*)/))){out.push("<h3>"+inline(m[1])+"</h3>");return}
+    if(!l.trim()){out.push('<div class="sp"></div>');return}
+    out.push("<p>"+inline(l)+"</p>");
+  });
+  if(inList)out.push("</ul>");
+  return out.join("");
+}
+function countKind(list,k){var n=list.filter(function(x){return x.kind===k}).length;return n?String(n):""}
+function renderView(){
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){b.setAttribute("aria-selected",String(b.dataset.tab===tab))});
+  var mine=items().filter(function(x){return x.project===activeProj});
+  $("cntShoot").textContent=countKind(mine,"shoot");
+  $("cntReady").textContent=countKind(mine,"ready");
+  $("vCal").hidden=tab!=="cal";
+  $("vPlan").hidden=tab!=="plan";
+  $("vItems").hidden=!(tab==="shoot"||tab==="ready");
+  if(tab==="plan")renderPlan();
+  if(tab==="shoot"||tab==="ready")renderItems();
+}
+function renderPlan(){
+  var p=curProject();if(!p)return;
+  var link=p.planLink||"",a=$("planOpen");
+  if(/^https?:\/\//i.test(link)){a.href=link;a.hidden=false}else{a.hidden=true;a.removeAttribute("href")}
+  if(readOnly){
+    var v=$("planView");v.hidden=false;
+    v.innerHTML=(p.plan&&p.plan.trim())?mdLite(p.plan):'<div class="empty">Контент-план пока не заполнен.</div>';
+    return;
+  }
+  var ta=$("planText");
+  if(document.activeElement!==ta||planShownFor!==p.id){
+    if(ta.value!==(p.plan||""))ta.value=p.plan||"";
+    planShownFor=p.id;
+  }
+  var li=$("planLink");
+  if(document.activeElement!==li)li.value=link;
+}
+function commitPlan(){
+  clearTimeout(planTimer);planTimer=null;
+  var pid=planPid;if(!pid)return;
+  planPid=null;
+  var txt=$("planText").value,p=project(pid);
+  if(!p||(p.plan||"")===txt)return;
+  mutate(function(d){var q=d.projects.filter(function(x){return x.id===pid})[0];if(q)q.plan=txt});
+}
+function resetItForm(){
+  itEdit=null;itDelArmed=false;
+  $("itName").value="";$("itText").value="";$("itDate").value=dkey(new Date());
+}
+function fmtDay(k){
+  if(!k)return "";
+  var d=parseKey(k);
+  return d.getDate()+" "+MONTHS_GEN[d.getMonth()]+(d.getFullYear()!==new Date().getFullYear()?" "+d.getFullYear():"");
+}
+function renderItems(){
+  var kind=tab;
+  $("itTitle").textContent=kind==="shoot"?"Съёмки":"Готовые ролики";
+  $("itName").placeholder=kind==="shoot"?"Что сняли, например: съёмка в зале, 3 ролика":"Название ролика";
+  $("itSave").textContent=itEdit?"Сохранить":"Добавить";
+  $("itCancel").hidden=!itEdit;$("itDel").hidden=!itEdit;
+  if(!itDelArmed){$("itDel").textContent="Удалить";$("itDel").classList.remove("armed")}
+  var list=items().filter(function(x){return x.project===activeProj&&x.kind===kind}).sort(function(a,b){
+    if(a.date!==b.date)return a.date<b.date?1:-1;
+    return (b.createdAt||0)-(a.createdAt||0);
+  });
+  if(!list.length){
+    $("itList").innerHTML='<div class="empty">'+(kind==="shoot"?"Отснятого пока нет.":"Готовых роликов пока нет.")+'</div>';
+    return;
+  }
+  $("itList").innerHTML=list.map(function(x){
+    return '<div class="it'+(x.kind==="ready"?" ready":"")+(x.id===itEdit?" cur":"")+'" data-id="'+esc(x.id)+'">'
+      +'<div class="it-top"><b>'+esc(x.title)+'</b><span class="it-date">'+esc(fmtDay(x.date))+'</span></div>'
+      +(x.text?'<div class="it-text">'+esc(x.text)+'</div>':"")
+      +(readOnly?"":'<div class="it-btns"><button class="btn sm it-edit" data-id="'+esc(x.id)+'">Изменить</button>'
+        +(x.kind==="shoot"?'<button class="btn sm it-move" data-id="'+esc(x.id)+'">Смонтировано → в готовые</button>':"")+'</div>')
+      +'</div>';
+  }).join("");
+}
+function itSave(){
+  if(readOnly)return;
+  var title=$("itName").value.trim();
+  if(!title){toast(tab==="shoot"?"Напиши, что сняли":"Напиши название ролика");$("itName").focus();return}
+  var base=itEdit?items().filter(function(x){return x.id===itEdit})[0]:null;
+  var it={id:itEdit||uid(),project:base?base.project:activeProj,kind:base?base.kind:tab,title:title,date:$("itDate").value||dkey(new Date()),text:$("itText").value,createdAt:base?base.createdAt:Date.now()};
+  var msg=itEdit?"Сохранено":"Добавлено";
+  resetItForm();
+  mutate(function(d){
+    d.items=d.items||[];
+    var i=d.items.findIndex(function(x){return x.id===it.id});
+    if(i>=0)d.items[i]=it;else d.items.push(it);
+  });
+  toast(msg);
+}
+
 /* ---------- events ---------- */
 $("prev").addEventListener("click",function(){view=new Date(view.getFullYear(),view.getMonth()-1,1);render()});
 $("next").addEventListener("click",function(){view=new Date(view.getFullYear(),view.getMonth()+1,1);render()});
@@ -850,6 +1071,7 @@ $("today").addEventListener("click",function(){var n=new Date();view=new Date(n.
 $("print").addEventListener("click",doPrint);
 $("mgr").addEventListener("click",openMgr);
 $("projSel").addEventListener("change",function(){
+  commitPlan();resetItForm();
   activeProj=this.value;lsSet(LS_PROJ,activeProj);render();
 });
 
@@ -948,6 +1170,7 @@ $("pmBody").addEventListener("click",function(ev){
       mutate(function(d){
         d.projects=d.projects.filter(function(x){return x.id!==id});
         d.entries=d.entries.filter(function(x){return x.project!==id});
+        d.items=(d.items||[]).filter(function(x){return x.project!==id});
         if(!d.projects.length)d.projects.push({id:uid(),name:"Основной проект",token:null});
       });
       if(activeProj===id){activeProj=data.projects[0].id;lsSet(LS_PROJ,activeProj)}
@@ -974,6 +1197,61 @@ $("pmAdd").addEventListener("click",function(){
   toast("Проект добавлен");
 });
 $("pmNew").addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();$("pmAdd").click()}});
+$("pmAuto").addEventListener("change",function(){
+  var on=this.checked;
+  mutate(function(d){d.autoPublish=on});
+  toast(on?"Ссылки клиентов будут обновляться сами":"Автообновление выключено");
+  if(on)scheduleAutoPublish(1000);
+});
+
+$("tabs").addEventListener("click",function(ev){
+  var b=ev.target.closest(".tab");if(!b)return;
+  commitPlan();
+  if($("panel").classList.contains("open")||$("pm").classList.contains("open"))closeAll();
+  tab=b.dataset.tab;
+  if(!CLIENT)lsSet("kalendar:tab",tab);
+  resetItForm();
+  renderView();
+});
+$("planText").addEventListener("input",function(){
+  planPid=activeProj;
+  clearTimeout(planTimer);
+  planTimer=setTimeout(commitPlan,900);
+});
+$("planText").addEventListener("blur",commitPlan);
+$("planLink").addEventListener("change",function(){
+  var v=this.value.trim(),pid=activeProj;
+  if(v&&!/^https?:\/\//i.test(v))v="https://"+v;
+  this.value=v;
+  mutate(function(d){var q=d.projects.filter(function(x){return x.id===pid})[0];if(q)q.planLink=v});
+});
+$("itSave").addEventListener("click",itSave);
+$("itName").addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();itSave()}});
+$("itCancel").addEventListener("click",function(){resetItForm();renderItems()});
+$("itDel").addEventListener("click",function(){
+  if(!itEdit||readOnly)return;
+  if(!itDelArmed){itDelArmed=true;this.textContent="Точно удалить?";this.classList.add("armed");return}
+  var id=itEdit;
+  resetItForm();
+  mutate(function(d){d.items=(d.items||[]).filter(function(x){return x.id!==id})});
+  toast("Удалено");
+});
+$("itList").addEventListener("click",function(ev){
+  if(readOnly)return;
+  var b=ev.target.closest("button");if(!b)return;
+  var x=items().filter(function(y){return y.id===b.dataset.id})[0];if(!x)return;
+  if(b.classList.contains("it-edit")){
+    itEdit=x.id;itDelArmed=false;
+    $("itName").value=x.title||"";$("itText").value=x.text||"";$("itDate").value=x.date||"";
+    renderItems();
+    $("itForm").scrollIntoView&&$("itForm").scrollIntoView({behavior:"smooth",block:"center"});
+    $("itName").focus();
+  }else if(b.classList.contains("it-move")){
+    var id=x.id;
+    mutate(function(d){var y=(d.items||[]).filter(function(z){return z.id===id})[0];if(y)y.kind="ready"});
+    toast("Перенесено в готовые ролики");
+  }
+});
 $("pmExport").addEventListener("click",exportData);
 $("pmDisc").addEventListener("click",function(){
   var b=$("pmDisc");
@@ -1028,15 +1306,16 @@ $("sToken").addEventListener("keydown",function(ev){if(ev.key==="Enter")connect(
 $("printCss").textContent=PAGE_RULE+"@media print{"+PRINT_CSS+"}";
 $("fStatus").innerHTML=STATUSES.map(function(s){return '<option value="'+s.id+'">'+s.g+" "+esc(s.name)+'</option>'}).join("");
 renderLegend();
+resetItForm();
 
 function startClient(){
   document.documentElement.classList.add("client");
   Array.prototype.forEach.call(document.querySelectorAll(".adm"),function(el){el.hidden=true});
   $("pm").hidden=true;
   var p=CLIENT.project;
-  data={v:1,projects:[{id:p.id,name:p.name}],entries:CLIENT.entries.map(function(e){return Object.assign({project:p.id},e)})};
+  data={v:1,projects:[{id:p.id,name:p.name,plan:p.plan||"",planLink:p.planLink||""}],entries:CLIENT.entries.map(function(e){return Object.assign({project:p.id},e)}),items:(CLIENT.items||[]).map(function(x){return Object.assign({project:p.id},x)})};
   activeProj=p.id;
-  $("brand").textContent="Контент-план · "+p.name;$("brand").hidden=false;
+  $("brand").textContent=p.name;$("brand").hidden=false;
   setSync("ok","Обновлено "+fmtDT(CLIENT.updated));
   $("app").hidden=false;
   render();
@@ -1055,6 +1334,7 @@ async function startAdmin(fresh){
     if(!project(activeProj))activeProj=data.projects[0].id;
     lsSet(LS_PROJ,activeProj);
     setSync("ok","Синхронизировано");
+    scheduleAutoPublish(3000);
   }catch(e){
     if(!data.projects.length){
       $("app").hidden=true;$("setup").hidden=false;
