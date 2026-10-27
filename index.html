@@ -139,6 +139,8 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .pm-foot{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
 .chk{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--ink);font-weight:500;margin-bottom:14px;cursor:pointer}
 .chk input{width:auto;margin:0}
+.chk.share{margin:0;font-size:13px;color:var(--muted)}
+.chk.share input{accent-color:var(--accent)}
 
 /* setup */
 .setup{max-width:520px;margin:6vh auto;padding:0 16px}
@@ -243,6 +245,8 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
     <button class="btn adm" id="mgr">Проекты и ссылки</button>
   </div>
 
+  <div class="empty" id="noShare" hidden>Пока нечего показать.</div>
+
   <section id="vCal">
     <div class="bar">
       <div class="nav">
@@ -251,6 +255,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
         <button class="btn sq" id="next" aria-label="Следующий месяц">›</button>
         <button class="btn" id="today">Сегодня</button>
         <button class="btn" id="print">Распечатать</button>
+        <label class="chk share adm"><input type="checkbox" data-share="cal"> Показывать клиенту</label>
       </div>
       <div class="legend" id="legend" role="group" aria-label="Фильтр по типу"></div>
     </div>
@@ -264,6 +269,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
     <div class="sheet">
       <div class="sheet-head">
         <h2>Контент-план</h2>
+        <label class="chk share adm"><input type="checkbox" data-share="plan"> Показывать клиенту</label>
         <a class="btn sm" id="planOpen" target="_blank" rel="noopener" hidden>Открыть ссылку ↗</a>
       </div>
       <textarea class="adm plan-ta" id="planText" placeholder="Сценарии, рубрики, идеи. Можно писать: # Заголовок, - пункт списка, **жирный**."></textarea>
@@ -275,7 +281,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
 
   <section id="vItems" hidden>
     <div class="sheet">
-      <div class="sheet-head"><h2 id="itTitle"></h2></div>
+      <div class="sheet-head"><h2 id="itTitle"></h2><label class="chk share adm"><input type="checkbox" id="itShare" data-share="shoot"> Показывать клиенту</label></div>
       <div class="it-form adm" id="itForm">
         <input id="itName" type="text" autocomplete="off">
         <div class="row2"><label>Дата<input id="itDate" type="date"></label><span></span></div>
@@ -476,6 +482,7 @@ function setSync(kind,msg){
 /* ---------- data layer ---------- */
 function emptyData(){return {v:1,projects:[{id:uid(),name:"Основной проект",token:null}],entries:[],items:[]}}
 function items(){return data.items||(data.items=[])}
+function shareOf(p){var s=(p&&p.share)||{};return {cal:s.cal!==false,plan:s.plan!==false,shoot:s.shoot!==false,ready:s.ready!==false}}
 function cacheLocal(){lsSet(LS_DATA,JSON.stringify(data))}
 function mutate(fn){
   fn(data);
@@ -833,7 +840,7 @@ function clientItems(pid){
 }
 function clientSig(pid){
   var p=project(pid);
-  return djb(JSON.stringify([p?p.name:"",clientEntries(pid),p?(p.plan||""):"",p?(p.planLink||""):"",clientItems(pid)]));
+  return djb(JSON.stringify([p?p.name:"",clientEntries(pid),p?(p.plan||""):"",p?(p.planLink||""):"",clientItems(pid),shareOf(p)]));
 }
 function clientUrl(token){return siteBase()+"c/"+token+".html"}
 async function buildClientHtml(pid){
@@ -842,7 +849,8 @@ async function buildClientHtml(pid){
   var src=await r.text();
   var marker="<!--CLIENT"+"_DATA-->";
   if(src.indexOf(marker)<0)throw new Error("Не удалось прочитать страницу приложения");
-  var payload={updated:Date.now(),project:{id:p.id,name:p.name,plan:p.plan||"",planLink:p.planLink||""},entries:clientEntries(pid),items:clientItems(pid)};
+  var sh=shareOf(p);
+  var payload={updated:Date.now(),share:sh,project:{id:p.id,name:p.name,plan:sh.plan?(p.plan||""):"",planLink:sh.plan?(p.planLink||""):""},entries:sh.cal?clientEntries(pid):[],items:clientItems(pid).filter(function(x){return sh[x.kind]})};
   var json=JSON.stringify(payload).replace(/</g,"\\u003c");
   var inject='<base href="../"><'+'script>window.__CLIENT__='+json+';<'+'/script>';
   var html=src.replace(marker,function(){return inject});
@@ -984,6 +992,11 @@ function renderView(){
   var mine=items().filter(function(x){return x.project===activeProj});
   $("cntShoot").textContent=countKind(mine,"shoot");
   $("cntReady").textContent=countKind(mine,"ready");
+  if(!CLIENT){
+    $("itShare").dataset.share=tab==="ready"?"ready":"shoot";
+    var shp=shareOf(curProject());
+    Array.prototype.forEach.call(document.querySelectorAll("input[data-share]"),function(i){i.checked=shp[i.dataset.share]});
+  }
   $("vCal").hidden=tab!=="cal";
   $("vPlan").hidden=tab!=="plan";
   $("vItems").hidden=!(tab==="shoot"||tab==="ready");
@@ -1252,6 +1265,16 @@ $("itList").addEventListener("click",function(ev){
     toast("Перенесено в готовые ролики");
   }
 });
+document.addEventListener("change",function(ev){
+  var i=ev.target;
+  if(readOnly||!i||!i.matches||!i.matches("input[data-share]"))return;
+  var k=i.dataset.share,on=i.checked,pid=activeProj;
+  mutate(function(d){
+    var q=d.projects.filter(function(x){return x.id===pid})[0];
+    if(q){var sh=shareOf(q);sh[k]=on;q.share=sh}
+  });
+  toast(on?"Клиент видит этот раздел":"Раздел скрыт от клиента");
+});
 $("pmExport").addEventListener("click",exportData);
 $("pmDisc").addEventListener("click",function(){
   var b=$("pmDisc");
@@ -1308,17 +1331,45 @@ $("fStatus").innerHTML=STATUSES.map(function(s){return '<option value="'+s.id+'"
 renderLegend();
 resetItForm();
 
+function applyClient(c){
+  CLIENT=c;
+  var p=c.project;
+  var sh=c.share||{cal:true,plan:true,shoot:true,ready:true};
+  data={v:1,projects:[{id:p.id,name:p.name,plan:p.plan||"",planLink:p.planLink||""}],
+    entries:(c.entries||[]).map(function(e){return Object.assign({project:p.id},e)}),
+    items:(c.items||[]).map(function(x){return Object.assign({project:p.id},x)})};
+  activeProj=p.id;
+  $("brand").textContent=p.name;$("brand").hidden=false;
+  var vis=[];
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){
+    var on=sh[b.dataset.tab]!==false;b.hidden=!on;if(on)vis.push(b.dataset.tab);
+  });
+  $("tabs").hidden=vis.length<2;
+  if(vis.indexOf(tab)<0)tab=vis[0]||"none";
+  $("noShare").hidden=vis.length>0;
+  setSync("ok","Обновлено "+fmtDT(c.updated));
+  render();renderList();
+}
+async function checkFresh(){
+  try{
+    var r=await fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"});
+    if(!r.ok)return;
+    var t=await r.text();
+    var m=t.match(/window\.__CLIENT__=(\{[\s\S]*?\});<\/script>/);
+    if(!m)return;
+    var c=JSON.parse(m[1]);
+    if(c&&c.updated>CLIENT.updated)applyClient(c);
+  }catch(e){}
+}
 function startClient(){
   document.documentElement.classList.add("client");
   Array.prototype.forEach.call(document.querySelectorAll(".adm"),function(el){el.hidden=true});
   $("pm").hidden=true;
-  var p=CLIENT.project;
-  data={v:1,projects:[{id:p.id,name:p.name,plan:p.plan||"",planLink:p.planLink||""}],entries:CLIENT.entries.map(function(e){return Object.assign({project:p.id},e)}),items:(CLIENT.items||[]).map(function(x){return Object.assign({project:p.id},x)})};
-  activeProj=p.id;
-  $("brand").textContent=p.name;$("brand").hidden=false;
-  setSync("ok","Обновлено "+fmtDT(CLIENT.updated));
   $("app").hidden=false;
-  render();
+  applyClient(CLIENT);
+  checkFresh();
+  setInterval(function(){if(document.visibilityState==="visible")checkFresh()},120000);
+  document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")checkFresh()});
 }
 async function startAdmin(fresh){
   $("app").hidden=false;
