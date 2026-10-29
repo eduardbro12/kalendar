@@ -153,6 +153,37 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 #printSheet{display:none}
 
+/* v6: report */
+.rp-ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rp-ctl label{flex-direction:row;align-items:center;gap:6px;color:var(--muted)}
+.rp-ctl input{width:auto;font-size:15px;padding:7px 9px}
+.rpt{display:flex;flex-direction:column;gap:18px;max-width:900px;color:var(--ink)}
+.rp-head{display:flex;gap:14px;align-items:center}
+.rp-head img{width:48px;height:48px;border-radius:10px;object-fit:contain}
+.rp-head h3{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.rp-head small{display:block;color:var(--muted);font-size:13px;font-weight:500;letter-spacing:0;margin-top:2px}
+.rp-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rp-tile{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.rp-tile b{display:block;font-size:26px;font-weight:700;line-height:1.1}
+.rp-tile span{font-size:12.5px;color:var(--muted)}
+.rp-tile.warn{border-color:var(--danger)}
+.rp-tile.warn b{color:var(--danger)}
+.rp-block{break-inside:avoid}
+.rp-block h4{margin:0 0 8px;font-size:16px;font-weight:650}
+.rp-tw{overflow-x:auto}
+.rp-table{width:100%;border-collapse:collapse;font-size:14px}
+.rp-table th,.rp-table td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.rp-table th{font-size:12.5px;color:var(--muted);font-weight:600}
+.rp-table .n{text-align:right;white-space:nowrap}
+.rp-shoot{border:1px solid var(--line);border-left:4px solid var(--c-shoot);border-radius:8px;padding:10px 12px;margin-bottom:8px;break-inside:avoid;font-size:14px}
+.rp-shoot b{font-weight:650}
+.rp-shoot ul{margin:6px 0 0;padding-left:20px}
+.rp-shoot li{margin:2px 0}
+.rp-muted{color:var(--muted);font-size:13px}
+.rp-warn{color:var(--danger)}
+.rpt.paper{--ink:#18272A;--muted:#5D6E71;--line:#D5DDDC;--surface:#FFFFFF;--off:#F6F8F7;--danger:#B3261E;--c-shoot:#B4532A;color:#18272A;background:#fff;font-family:"Onest",system-ui,Arial,sans-serif;max-width:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rpt.paper .rp-tiles{grid-template-columns:repeat(3,1fr)}
+
 /* v5: shoots, videos, board */
 .sheet.wide{max-width:none}
 .sh-form{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:10px;padding:14px;max-width:640px}
@@ -346,6 +377,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
       <button class="tab" role="tab" data-tab="plan">Контент-план</button>
       <button class="tab" role="tab" data-tab="shoot">Съёмки<span class="cnt" id="cntShoot"></span></button>
       <button class="tab" role="tab" data-tab="ready">Ролики<span class="cnt" id="cntReady"></span></button>
+      <button class="tab" role="tab" data-tab="report">Отчёт</button>
     </div>
     <span class="spacer"></span>
     <span class="sync" id="sync"></span>
@@ -412,6 +444,19 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
       <div class="vb-add adm"><input id="vbNew" type="text" autocomplete="off" placeholder="Ролик без съёмки, например: монтаж из архива"><button class="btn" id="vbAdd" type="button">Добавить</button></div>
       <div class="board" id="board"></div>
       <div id="dropped"></div>
+    </div>
+  </section>
+
+  <section id="vReport" hidden>
+    <div class="sheet wide">
+      <div class="sheet-head"><h2>Отчёт</h2><label class="chk share adm"><input type="checkbox" data-share="report"> Показывать клиенту</label></div>
+      <div class="rp-ctl">
+        <div class="seg" id="rpQuick" role="group" aria-label="Период"><button type="button" data-q="this">Этот месяц</button><button type="button" data-q="prev">Прошлый месяц</button><button type="button" data-q="q3">3 месяца</button></div>
+        <label>с<input type="date" id="rpFrom"></label>
+        <label>по<input type="date" id="rpTo"></label>
+        <button class="btn primary" id="rpPdf" type="button">Скачать PDF</button>
+      </div>
+      <div id="rpOut"></div>
     </div>
   </section>
 </div>
@@ -550,11 +595,12 @@ var readOnly=!!CLIENT;
 var busy={}, armedDel={}, pjMsg={};
 var autoTimer=null, AUTO_DELAY=window.__AUTO_DELAY||20000;
 var tab=CLIENT?"cal":(lsGet("kalendar:tab")||"cal");
-if(["cal","plan","shoot","ready"].indexOf(tab)<0)tab="cal";
+if(["cal","plan","shoot","ready","report"].indexOf(tab)<0)tab="cal";
 var itEdit=null, itDelArmed=false, planTimer=null, planPid=null, planShownFor=null;
 var calMode=lsGet("kalendar:mode")||((window.matchMedia&&window.matchMedia("(max-width:700px)").matches)?"list":"month");
 var schedId=null, tokenExpAuto=null;
 var TRASH_DAYS=30;
+var rpFrom=null, rpTo=null, rpQ="this";
 var openShoot=null, openVid={}, shEdit=null, repFor=null, dropOpen=false, vSched=null, vAssign=null;
 var VST=[{id:"plan",name:"Запланировано"},{id:"shot",name:"Отснято — в монтаже"},{id:"ready",name:"Готово к выкладке"},{id:"pub",name:"Опубликовано"}];
 
@@ -646,7 +692,7 @@ function migrate(d){
   });
   d.entries=(d.entries||[]).filter(function(e){return e.type!=="shoot"});
 }
-function shareOf(p){var s=(p&&p.share)||{};return {cal:s.cal!==false,shootsCal:s.shootsCal===true,plan:s.plan!==false,shoot:s.shoot!==false,ready:s.ready!==false}}
+function shareOf(p){var s=(p&&p.share)||{};return {cal:s.cal!==false,shootsCal:s.shootsCal===true,plan:s.plan!==false,shoot:s.shoot!==false,ready:s.ready!==false,report:s.report!==false}}
 function purgeTrash(d){d.trash=(d.trash||[]).filter(function(t){return Date.now()-t.deletedAt<TRASH_DAYS*864e5})}
 function toTrash(d,kind,obj){purgeTrash(d);if(!d.trash.some(function(t){return t.obj.id===obj.id}))d.trash.push({kind:kind,obj:obj,deletedAt:Date.now()})}
 function cacheLocal(){lsSet(LS_DATA,JSON.stringify(data))}
@@ -1086,6 +1132,7 @@ function printInner(){
     +'<div class="ps-days" style="grid-template-rows:repeat('+rows+',1fr)">'+cells+'</div></div>';
 }
 function doPrint(){
+  $("printCss").textContent=PAGE_RULE+"@media print{"+PRINT_CSS+"}";
   $("printSheet").innerHTML=printInner();
   setTimeout(function(){
     try{window.print()}catch(e){toast("Печать не открылась. Попробуйте меню браузера → Печать.")}
@@ -1313,9 +1360,11 @@ function renderView(){
   $("vPlan").hidden=tab!=="plan";
   $("vShoots").hidden=tab!=="shoot";
   $("vVideos").hidden=tab!=="ready";
+  $("vReport").hidden=tab!=="report";
   if(tab==="plan")renderPlan();
   if(tab==="shoot")renderShoots();
   if(tab==="ready")renderBoard();
+  if(tab==="report")renderReport();
 }
 function renderPlan(){
   var p=curProject();if(!p)return;
@@ -1558,6 +1607,112 @@ function delVideo(vid){
     d.videos=(d.videos||[]).filter(function(x){return x.id!==vid});
   });
   toast("Ролик удалён. Вернуть можно из корзины.");
+}
+
+/* ---------- report ---------- */
+function monthBounds(y,m){return [dkey(new Date(y,m,1)),dkey(new Date(y,m+1,0))]}
+function setRpQuick(q){
+  var n=new Date(),y=n.getFullYear(),m=n.getMonth(),b;
+  if(q==="prev")b=monthBounds(y,m-1);
+  else if(q==="q3")b=[dkey(new Date(y,m-2,1)),dkey(new Date(y,m+1,0))];
+  else{q="this";b=monthBounds(y,m)}
+  rpQ=q;rpFrom=b[0];rpTo=b[1];
+}
+function fmtRange(a,b){
+  var da=parseKey(a),db=parseKey(b);
+  var left=da.getDate()+" "+MONTHS_GEN[da.getMonth()]+(da.getFullYear()!==db.getFullYear()?" "+da.getFullYear():"");
+  return left+" — "+db.getDate()+" "+MONTHS_GEN[db.getMonth()]+" "+db.getFullYear();
+}
+function reportHtml(from,to,paper){
+  var p=curProject();if(!p)return "";
+  var today=dkey(new Date());
+  function inR(k){return !!k&&k>=from&&k<=to}
+  var ents=data.entries.filter(function(e){return e.project===activeProj&&e.type!=="shoot"&&inR(e.date)}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:byTime(a,b)});
+  var pubE=ents.filter(function(e){return e.status==="pub"});
+  var shs=shoots().filter(function(x){return x.project===activeProj&&inR(x.date)}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:byTime(a,b)});
+  var res=[];
+  shs.forEach(function(x){if(x.report)x.report.results.forEach(function(r){res.push({r:r,shoot:x})})});
+  var pendingN=0;shs.forEach(function(x){if(!x.report)pendingN+=shootVideos(x.id).length});
+  var shotN=res.filter(function(o){return o.r.r==="shot"}).length;
+  var movedN=res.filter(function(o){return o.r.r==="moved"}).length;
+  var cancelN=res.filter(function(o){return o.r.r==="cancel"}).length;
+  var lost=res.filter(function(o){return o.r.approved&&o.r.r!=="shot"});
+  var noRep=shs.filter(function(x){return !x.report&&x.date<today});
+  var h='<div class="rpt'+(paper?" paper":"")+'">';
+  h+='<div class="rp-head">'+(p.logo?'<img alt="" src="'+esc(p.logo)+'">':"")+'<h3>Отчёт · '+esc(p.name)+'<small>'+esc(fmtRange(from,to))+' · сформирован '+esc(fmtDT(Date.now()))+'</small></h3></div>';
+  if(!ents.length&&!shs.length)return h+'<div class="empty">За этот период данных нет.</div></div>';
+  h+='<div class="rp-tiles">'
+    +'<div class="rp-tile"><b>'+ents.length+'</b><span>публикаций в плане</span></div>'
+    +'<div class="rp-tile"><b>'+pubE.length+'</b><span>опубликовано</span></div>'
+    +'<div class="rp-tile"><b>'+shs.length+'</b><span>'+plural(shs.length,"съёмка","съёмки","съёмок")+'</span></div>'
+    +'<div class="rp-tile"><b>'+(res.length+pendingN)+'</b><span>роликов в планах съёмок</span></div>'
+    +'<div class="rp-tile"><b>'+shotN+'</b><span>снято'+(res.length?" из "+res.length+" по отчётам":"")+'</span></div>'
+    +'<div class="rp-tile'+(lost.length?" warn":"")+'"><b>'+lost.length+'</b><span>согласовано, но не снято</span></div>'
+    +'</div>';
+  if(ents.length){
+    var rows=CONTENT_TYPES.map(function(t){
+      var a=ents.filter(function(e){return e.type===t.id}).length,b2=pubE.filter(function(e){return e.type===t.id}).length;
+      return a?'<tr><td>'+esc(t.name)+'</td><td class="n">'+a+'</td><td class="n">'+b2+'</td></tr>':"";
+    }).join("");
+    h+='<div class="rp-block"><h4>Публикации по форматам</h4><div class="rp-tw"><table class="rp-table"><thead><tr><th>Формат</th><th class="n">В плане</th><th class="n">Опубликовано</th></tr></thead><tbody>'+rows
+      +'<tr><td><b>Всего</b></td><td class="n"><b>'+ents.length+'</b></td><td class="n"><b>'+pubE.length+'</b></td></tr></tbody></table></div></div>';
+  }
+  if(shs.length){
+    h+='<div class="rp-block"><h4>Съёмки</h4>'+shs.map(function(x){
+      var line='<b>'+esc(fmtDayW(x.date))+(x.time?" · "+esc(x.time):"")+'</b> — '+esc(x.title||"Съёмка")+(x.place?' <span class="rp-muted">· '+esc(x.place)+'</span>':"");
+      var body="";
+      if(x.report){
+        var rr=x.report.results,sn=rr.filter(function(r){return r.r==="shot"}).length;
+        body+='<div>Снято <b>'+sn+'</b> из '+rr.length+'</div>';
+        var not=rr.filter(function(r){return r.r!=="shot"});
+        if(not.length)body+='<ul>'+not.map(function(r){return '<li>'+esc(r.title)+(r.approved?' <span class="rp-warn">(было согласовано)</span>':"")+" — "+(r.r==="moved"?"перенесли":"отменили")+(r.reason?": "+esc(r.reason):"")+'</li>'}).join("")+'</ul>';
+        if(x.report.note)body+='<div class="rp-muted" style="margin-top:6px">'+esc(x.report.note)+'</div>';
+      }else{
+        var n=shootVideos(x.id).length;
+        body+=x.date<today?'<div class="rp-warn">Отчёт по съёмке не заполнен'+(n?" · в плане было "+n+" "+plural(n,"ролик","ролика","роликов"):"")+'</div>'
+          :'<div class="rp-muted">Запланирована · '+n+" "+plural(n,"ролик","ролика","роликов")+'</div>';
+      }
+      return '<div class="rp-shoot">'+line+body+'</div>';
+    }).join("")+'</div>';
+  }
+  if(lost.length){
+    h+='<div class="rp-block"><h4>Согласовано, но не снято</h4><div class="rp-tw"><table class="rp-table"><thead><tr><th>Ролик</th><th>Съёмка</th><th>Итог</th><th>Причина</th></tr></thead><tbody>'
+      +lost.map(function(o){return '<tr><td>'+esc(o.r.title)+'</td><td>'+esc(fmtDay(o.shoot.date))+'</td><td>'+(o.r.r==="moved"?"перенесли":"отменили")+'</td><td>'+esc(o.r.reason||"не указана")+'</td></tr>'}).join("")
+      +'</tbody></table></div></div>';
+  }
+  var ids={};res.forEach(function(o){ids[o.r.vid]=1});shs.forEach(function(x){shootVideos(x.id).forEach(function(v){ids[v.id]=1})});
+  var vids=videos().filter(function(v){return v.project===activeProj&&ids[v.id]});
+  if(vids.length){
+    var cnt={};vids.forEach(function(v){var st=vStatus(v);cnt[st]=(cnt[st]||0)+1});
+    h+='<div class="rp-block"><h4>Где сейчас ролики со съёмок периода</h4><div class="rp-tw"><table class="rp-table"><tbody>'
+      +VST.concat([{id:"dropped",name:"Отменено"}]).filter(function(c){return cnt[c.id]}).map(function(c){return '<tr><td>'+esc(c.name)+'</td><td class="n"><b>'+cnt[c.id]+'</b></td></tr>'}).join("")
+      +'</tbody></table></div></div>';
+  }
+  if(pubE.length){
+    h+='<div class="rp-block"><h4>Опубликовано за период</h4><div class="rp-tw"><table class="rp-table"><thead><tr><th>Дата</th><th>Формат</th><th>Название</th></tr></thead><tbody>'
+      +pubE.map(function(e){return '<tr><td style="white-space:nowrap">'+esc(fmtDay(e.date))+'</td><td>'+esc(typeOf(e.type).name)+'</td><td>'+esc(e.title||"")+'</td></tr>'}).join("")
+      +'</tbody></table></div></div>';
+  }
+  if(noRep.length&&!readOnly)h+='<div class="hint warn">Не заполнены отчёты по '+noRep.length+' '+plural(noRep.length,"съёмке","съёмкам","съёмкам")+'. Без них цифры «снято» неполные.</div>';
+  return h+'</div>';
+}
+function renderReport(){
+  if(!rpFrom||!rpTo)setRpQuick(rpQ);
+  Array.prototype.forEach.call(document.querySelectorAll("#rpQuick button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.q===rpQ))});
+  if(document.activeElement!==$("rpFrom"))$("rpFrom").value=rpFrom;
+  if(document.activeElement!==$("rpTo"))$("rpTo").value=rpTo;
+  $("rpOut").innerHTML=reportHtml(rpFrom,rpTo,false);
+}
+function doPrintReport(){
+  if(!rpFrom||!rpTo)setRpQuick(rpQ);
+  $("printCss").textContent="@page{size:A4 portrait;margin:12mm}";
+  $("printSheet").innerHTML=reportHtml(rpFrom,rpTo,true);
+  var p=curProject(),old=document.title;
+  document.title="Отчёт "+(p?p.name:"")+" "+rpFrom+" — "+rpTo;
+  setTimeout(function(){
+    try{window.print()}catch(e){toast("Печать не открылась. Попробуйте меню браузера → Печать.")}
+    setTimeout(function(){document.title=old},1500);
+  },80);
 }
 
 /* ---------- events ---------- */
@@ -1877,6 +2032,18 @@ $("vbAdd").addEventListener("click",function(){
   toast("Ролик добавлен в «Запланировано»");
 });
 $("vbNew").addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();$("vbAdd").click()}});
+$("rpQuick").addEventListener("click",function(ev){
+  var b=ev.target.closest("button[data-q]");if(!b)return;
+  setRpQuick(b.dataset.q);renderReport();
+});
+function rpDatesChanged(){
+  var a=$("rpFrom").value,b=$("rpTo").value;if(!a||!b)return;
+  if(a>b){var t=a;a=b;b=t}
+  rpFrom=a;rpTo=b;rpQ="custom";renderReport();
+}
+$("rpFrom").addEventListener("change",rpDatesChanged);
+$("rpTo").addEventListener("change",rpDatesChanged);
+$("rpPdf").addEventListener("click",doPrintReport);
 document.addEventListener("change",function(ev){
   var i=ev.target;
   if(readOnly||!i||!i.matches||!i.matches("input[data-share]"))return;
