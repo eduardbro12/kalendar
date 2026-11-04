@@ -18,7 +18,7 @@
   --bg:#F2F4F3; --surface:#FFFFFF; --ink:#18272A; --muted:#66777A;
   --line:#DCE3E2; --line-strong:#C3CDCC; --accent:#0E6B62; --accent-ink:#FFFFFF;
   --off:#F7F9F8; --today-bg:#E3F1EE; --danger:#B3261E; --fill:26%;
-  --c-reels:#C4286A; --c-post:#2B63C9; --c-carousel:#B96F00; --c-stories:#7647C7; --c-other:#5B6B6E; --c-shoot:#B4532A;
+  --c-reels:#7048E8; --c-post:#1C7ED6; --c-carousel:#0C8599; --c-stories:#E8590C; --c-other:#5B6B6E; --c-shoot:#2F9E44;
   --shadow:0 10px 40px rgba(20,40,40,.20);
   color-scheme:light;
 }
@@ -27,7 +27,7 @@
     --bg:#0F1719; --surface:#162123; --ink:#E6EEEE; --muted:#93A4A6;
     --line:#26363A; --line-strong:#38505A; --accent:#4FC3B3; --accent-ink:#06211E;
     --off:#121C1E; --today-bg:#123430; --danger:#F2867F; --fill:34%;
-    --c-reels:#F06AA0; --c-post:#6FA0F5; --c-carousel:#E5A13A; --c-stories:#A98BF0; --c-other:#98A8AA; --c-shoot:#E58A5F;
+    --c-reels:#9775FA; --c-post:#74C0FC; --c-carousel:#3BC9DB; --c-stories:#FFA94D; --c-other:#98A8AA; --c-shoot:#69DB7C;
     --shadow:0 10px 40px rgba(0,0,0,.5);
     color-scheme:dark;
   }
@@ -36,7 +36,7 @@
   --bg:#0F1719; --surface:#162123; --ink:#E6EEEE; --muted:#93A4A6;
   --line:#26363A; --line-strong:#38505A; --accent:#4FC3B3; --accent-ink:#06211E;
   --off:#121C1E; --today-bg:#123430; --danger:#F2867F; --fill:34%;
-  --c-reels:#F06AA0; --c-post:#6FA0F5; --c-carousel:#E5A13A; --c-stories:#A98BF0; --c-other:#98A8AA; --c-shoot:#E58A5F;
+  --c-reels:#9775FA; --c-post:#74C0FC; --c-carousel:#3BC9DB; --c-stories:#FFA94D; --c-other:#98A8AA; --c-shoot:#69DB7C;
   --shadow:0 10px 40px rgba(0,0,0,.5);
   color-scheme:dark;
 }
@@ -153,6 +153,33 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 #printSheet{display:none}
 
+/* v11: formats grouping, text formatting, bulk */
+.fmts{display:flex;flex-direction:column;gap:10px}
+.fsec{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.fsec>.vl{border:0;border-top:1px solid var(--line);border-radius:0}
+.fmt-h{display:flex;gap:10px;align-items:center;width:100%;background:none;border:0;text-align:left;padding:11px 14px;color:var(--ink);font-weight:650;font-size:15px}
+.fmt-h:hover{background:var(--off)}
+.fsec.open>.fmt-h .tw{transform:rotate(90deg)}
+.fmt-h .fn{flex:1}
+.fmt-h .fc{color:var(--muted);font-weight:500;font-size:13px}
+.fmt-h .fw{font-size:12px;font-weight:500;color:var(--muted)}
+.vr-hw{display:flex;align-items:center}
+.vr-hw .vr-h{flex:1;min-width:0}
+.sel-cb{width:18px;height:18px;margin:0 0 0 10px;flex:none;accent-color:var(--accent);cursor:pointer}
+.vc-top{display:flex;gap:8px;align-items:flex-start}
+.vc-top .sel-cb{margin:2px 0 0}
+.lgi-h .sel-cb{margin:0;align-self:center}
+.fmt{display:flex;gap:4px;flex-wrap:wrap}
+.fmt button{background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;padding:3px 9px;font-size:12.5px;color:var(--ink);line-height:1.3}
+.fmt button:hover{border-color:var(--ink)}
+.md.sm{font-size:14px;line-height:1.5}
+.md.sm h3{font-size:15px;margin:8px 0 2px}
+.md.sm p{margin:0}
+.md.sm ul{margin:2px 0 4px}
+.bulk{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:18;background:var(--surface);border:1px solid var(--line-strong);box-shadow:var(--shadow);border-radius:14px;padding:8px 10px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;max-width:calc(100vw - 20px);justify-content:center}
+.bulk select{width:auto;font-size:13px;padding:5px 8px}
+.bk-n{font-weight:650;font-size:14px;padding:0 4px}
+
 /* v10: chronology, shoot decisions */
 .tk{display:flex;align-items:center;gap:4px;width:100%;min-width:0;background:color-mix(in srgb,var(--danger) 14%,var(--surface));border:1px solid var(--danger);color:var(--ink);border-radius:5px;padding:1px 6px;font-size:11.5px;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden}
 .tk .tk-t{overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -176,8 +203,8 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .ti{font-size:12px;line-height:1;flex:none}
 .block .bt::before{display:none}
 .block .bt .ti{margin-right:-2px}
-.apd{font-size:10px;color:var(--danger);flex:none}
-.apd.ok{color:#2E9E4F}
+.apd{font-size:11px;flex:none;line-height:1}
+
 .impb{position:absolute;top:5px;right:6px;width:18px;height:18px;border-radius:50%;background:var(--danger);color:#fff;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;line-height:1;pointer-events:none}
 .imp-line{display:block;font-size:12.5px;color:var(--danger);font-weight:600;margin-top:2px}
 .imp-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
@@ -266,7 +293,7 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .rp-shoot li{margin:2px 0}
 .rp-muted{color:var(--muted);font-size:13px}
 .rp-warn{color:var(--danger)}
-.rpt.paper{--ink:#18272A;--muted:#5D6E71;--line:#D5DDDC;--surface:#FFFFFF;--off:#F6F8F7;--danger:#B3261E;--c-shoot:#B4532A;color:#18272A;background:#fff;font-family:"Onest",system-ui,Arial,sans-serif;max-width:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rpt.paper{--ink:#18272A;--muted:#5D6E71;--line:#D5DDDC;--surface:#FFFFFF;--off:#F6F8F7;--danger:#B3261E;--c-shoot:#2F9E44;color:#18272A;background:#fff;font-family:"Onest",system-ui,Arial,sans-serif;max-width:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .rpt.paper .rp-tiles{grid-template-columns:repeat(3,1fr)}
 
 /* v5: shoots, videos, board */
@@ -413,7 +440,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
   .tk .tk-t{display:none}
   .block .bt .tn{display:none}
   .block .bt .ti{font-size:16px}
-  .block .bt .apd{font-size:9px}
+  .block .bt .apd{font-size:10px}
   .impb{top:2px;right:2px;width:14px;height:14px;font-size:10px}
   .imp-row{grid-template-columns:1fr}
   .sh{width:auto;padding:0 3px;font-size:10px;border-style:solid;justify-content:center}
@@ -521,12 +548,12 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
         </div>
       </details>
       <div class="seg ap-filter" id="uFilter" role="group" aria-label="Фильтр по согласованию"></div>
-      <div class="vl" id="uList"></div>
+      <div class="fmts" id="uList"></div>
       <details class="tg" id="planNotes">
         <summary>📝 Рубрики и общие заметки</summary>
         <div class="tg-body">
           <div class="hint nbadge adm" id="planNotion" hidden></div>
-          <textarea class="adm plan-ta" id="planText" placeholder="Рубрики, тон, правила. Можно писать: # Заголовок, - пункт списка, **жирный**."></textarea>
+          <div class="fmt adm" role="toolbar" aria-label="Оформление текста"><button type="button" data-fmt="b" title="Жирный (Cmd+B)"><b>Ж</b></button><button type="button" data-fmt="i" title="Курсив (Cmd+I)"><i>К</i></button><button type="button" data-fmt="ul" title="Список">• Список</button><button type="button" data-fmt="h" title="Заголовок">Заголовок</button></div><textarea class="adm plan-ta" id="planText" placeholder="Рубрики, тон, правила. Можно писать: # Заголовок, - пункт списка, **жирный**."></textarea>
           <label class="adm">Ссылка (необязательно), например на Notion<input id="planLink" type="url" placeholder="https://"></label>
           <div class="md" id="planView" hidden></div>
           <div class="hint adm" id="planHint">Сохраняется сам. Клиент видит этот текст по своей ссылке.</div>
@@ -543,7 +570,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
         <div class="row2"><label>Дата<input id="sfDate" type="date"></label><label>Время<input id="sfTime" type="time"></label></div>
         <label>Место<input id="sfPlace" type="text" autocomplete="off" placeholder="Зал, ресторан, улица…"></label>
         <label>Название (необязательно)<input id="sfTitle" type="text" autocomplete="off" placeholder="Например: съёмка с тренером"></label>
-        <label>Заметки (видит клиент)<textarea id="sfNotes" rows="2" placeholder="Что подготовить, кто будет на площадке"></textarea></label>
+        <label>Заметки (видит клиент)<div class="fmt" role="toolbar" aria-label="Оформление текста"><button type="button" data-fmt="b" title="Жирный (Cmd+B)"><b>Ж</b></button><button type="button" data-fmt="i" title="Курсив (Cmd+I)"><i>К</i></button><button type="button" data-fmt="ul" title="Список">• Список</button><button type="button" data-fmt="h" title="Заголовок">Заголовок</button></div><textarea id="sfNotes" rows="2" placeholder="Что подготовить, кто будет на площадке"></textarea></label>
         <div class="imp-row"><label>Нужно решить или согласовать (видит клиент)<input id="sfImp" type="text" autocomplete="off" placeholder="Например: кого снимаем, модель, локация"></label><label class="chk" style="margin:0"><input type="checkbox" id="sfImpDone"> решено</label></div>
         <div class="actions"><button class="btn primary" id="sfSave" type="button">Сохранить</button><button class="btn" id="sfCancel" type="button">Отмена</button><button class="btn danger" id="sfDel" type="button" hidden>Удалить съёмку</button></div>
       </div>
@@ -570,7 +597,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
         <label>Что случилось или что попросили<input id="lgTitle" type="text" autocomplete="off" placeholder="Например: срочно снять сторис к акции"></label>
         <div class="row2"><label id="lgGotWrap">Поступила<input id="lgGot" type="date"></label><label id="lgDueWrap">Срок<input id="lgDue" type="date"></label></div>
         <label>Кто попросил (необязательно)<input id="lgWho" type="text" autocomplete="off" placeholder="Например: управляющий"></label>
-        <label>Как решили (видит клиент)<textarea id="lgComment" rows="3" placeholder="Что сделали, что поменяли в плане"></textarea></label>
+        <label>Как решили (видит клиент)<div class="fmt" role="toolbar" aria-label="Оформление текста"><button type="button" data-fmt="b" title="Жирный (Cmd+B)"><b>Ж</b></button><button type="button" data-fmt="i" title="Курсив (Cmd+I)"><i>К</i></button><button type="button" data-fmt="ul" title="Список">• Список</button><button type="button" data-fmt="h" title="Заголовок">Заголовок</button></div><textarea id="lgComment" rows="3" placeholder="Что сделали, что поменяли в плане"></textarea></label>
         <div class="actions"><button class="btn primary" id="lgSave" type="button">Сохранить</button><button class="btn" id="lgCancel" type="button">Отмена</button><button class="btn danger" id="lgDel" type="button" hidden>Удалить</button></div>
       </div>
       <div class="lg" id="lgList"></div>
@@ -625,11 +652,11 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
     </div>
     <div class="row2">
       <label id="fStatusWrap">Статус<select id="fStatus"></select></label>
-      <label>Согласование<select id="fAp"><option value="">— не отмечать</option><option value="draft">⚪ Черновик</option><option value="review">🟠 На согласовании</option><option value="changes">🔴 Правки</option><option value="approved">🟢 Согласовано</option></select></label>
+      <label>Согласование<select id="fAp"><option value="">— не отмечать</option><option value="draft">📝 Черновик</option><option value="review">⏳ На согласовании</option><option value="changes">🔁 Правки</option><option value="approved">✅ Согласовано</option></select></label>
     </div>
     <div class="imp-row"><label>Важно для клиента (клиент это видит)<input id="fImp" type="text" autocomplete="off" placeholder="Например: согласовать модель для съёмки"></label><label class="chk" style="margin:0"><input type="checkbox" id="fImpDone"> решено</label></div>
     <label>Заметка (клиент её не видит)
-      <textarea id="fText" rows="5" placeholder="Сценарий, текст поста, идеи, ссылки"></textarea>
+      <div class="fmt" role="toolbar" aria-label="Оформление текста"><button type="button" data-fmt="b" title="Жирный (Cmd+B)"><b>Ж</b></button><button type="button" data-fmt="i" title="Курсив (Cmd+I)"><i>К</i></button><button type="button" data-fmt="ul" title="Список">• Список</button><button type="button" data-fmt="h" title="Заголовок">Заголовок</button></div><textarea id="fText" rows="5" placeholder="Сценарий, текст поста, идеи, ссылки"></textarea>
     </label>
     <div class="actions">
       <button class="btn primary" id="fSave">Сохранить</button>
@@ -691,6 +718,17 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
   </div>
 </aside>
 
+<div class="bulk" id="bulkBar" hidden>
+  <span class="bk-n" id="bkCount"></span>
+  <button class="btn sm" id="bkAll" type="button">Выбрать все</button>
+  <select id="bkMove" aria-label="Перенести в проект"></select>
+  <select id="bkAp" aria-label="Согласование"></select>
+  <select id="bkType" aria-label="Формат"></select>
+  <select id="bkShoot" aria-label="В съёмку"></select>
+  <button class="btn sm" id="bkDone" type="button">Сделано ✓</button>
+  <button class="btn sm danger" id="bkDel" type="button">Удалить</button>
+  <button class="btn sm" id="bkClear" type="button" aria-label="Снять выбор">✕</button>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -703,11 +741,11 @@ var TYPES=[
   {id:"reels",name:"Reels",ic:"🎞"},
   {id:"post",name:"Пост",ic:"🖼"},
   {id:"carousel",name:"Карусель",ic:"🎠"},
-  {id:"stories",name:"Сторис",ic:"⭕"},
+  {id:"stories",name:"Сторис",ic:"📱"},
   {id:"other",name:"Другое",ic:"✏️"},
   {id:"shoot",name:"Съёмка",ic:"🎬"}
 ];
-var APS=[{id:"draft",name:"Черновик",g:"⚪"},{id:"review",name:"На согласовании",g:"🟠"},{id:"changes",name:"Правки",g:"🔴"},{id:"approved",name:"Согласовано",g:"🟢"}];
+var APS=[{id:"draft",name:"Черновик",g:"📝"},{id:"review",name:"На согласовании",g:"⏳"},{id:"changes",name:"Правки",g:"🔁"},{id:"approved",name:"Согласовано",g:"✅"}];
 var STATUSES=[
   {id:"idea",name:"Идея",g:"○"},
   {id:"work",name:"В работе",g:"◐"},
@@ -776,6 +814,7 @@ var PALETTES=[{id:"teal",name:"Бирюза",l:"#0E6B62",d:"#4FC3B3"},{id:"blue"
 var BGS={mint:{l:"#F2F4F3",off:"#F7F9F8",ln:"#DCE3E2",d:"#0F1719",offd:"#121C1E",sd:"#162123",lnd:"#26363A"},
   gray:{l:"#F3F4F6",off:"#F8F9FA",ln:"#E1E4E8",d:"#111317",offd:"#16181D",sd:"#1B1E23",lnd:"#2B2F36"},
   warm:{l:"#F5F3EF",off:"#FAF8F5",ln:"#E5E0D7",d:"#15130F",offd:"#1B1814",sd:"#201D18",lnd:"#332E26"}};
+var uOpenFmt={}, selVid=new Set(), selTid=new Set(), bkArmed=false;
 var uF="all", uAct=null, lgEdit=null, lgKindSel="task", openLog=null;
 var openShoot=null, openVid={}, shEdit=null, repFor=null, dropOpen=false, vSched=null, vAssign=null;
 var VST=[{id:"plan",name:"Запланировано"},{id:"shot",name:"В работе: снято / монтаж"},{id:"ready",name:"Готово к выкладке"},{id:"pub",name:"Опубликовано"}];
@@ -957,6 +996,53 @@ function taskById(id){return tasks().filter(function(t){return t.id===id})[0]||n
 function daysBetween(a,b){return Math.round((parseKey(b).getTime()-parseKey(a).getTime())/864e5)}
 function noticeText(t){if(t.kind!=="task"||!t.due||!t.got)return "";var n=daysBetween(t.got,t.due);return n<=0?"в тот же день":"за "+n+" "+plural(n,"день","дня","дней")}
 function showTasks(){return !CLIENT||(CLIENT.share&&CLIENT.share.log!==false)}
+function fmtBarHtml(){return '<div class="fmt" role="toolbar" aria-label="Оформление текста"><button type="button" data-fmt="b" title="Жирный (Cmd+B)"><b>Ж</b></button><button type="button" data-fmt="i" title="Курсив (Cmd+I)"><i>К</i></button><button type="button" data-fmt="ul" title="Список">• Список</button><button type="button" data-fmt="h" title="Заголовок">Заголовок</button></div>'}
+function selCb(kind,id){
+  if(readOnly)return "";
+  var on=kind==="vid"?selVid.has(id):selTid.has(id);
+  return '<input type="checkbox" class="sel-cb" data-'+kind+'="'+esc(id)+'" aria-label="Выбрать"'+(on?" checked":"")+'>';
+}
+function fmtApply(ta,kind){
+  var v=ta.value,a=ta.selectionStart,b=ta.selectionEnd,sel=v.slice(a,b);
+  function wrap(m,ph){var t=sel||ph;ta.value=v.slice(0,a)+m+t+m+v.slice(b);ta.selectionStart=a+m.length;ta.selectionEnd=a+m.length+t.length}
+  if(kind==="b")wrap("**","жирный текст");
+  else if(kind==="i")wrap("*","курсив");
+  else{
+    var ls=v.lastIndexOf("\n",a-1)+1,le=v.indexOf("\n",b);if(le<0)le=v.length;
+    var block=v.slice(ls,le).split("\n").map(function(l){
+      if(kind==="ul")return /^\s*[-•*]\s+/.test(l)?l.replace(/^\s*[-•*]\s+/,""):"- "+l;
+      return /^#{1,3}\s+/.test(l)?l.replace(/^#{1,3}\s+/,""):"# "+l;
+    }).join("\n");
+    ta.value=v.slice(0,ls)+block+v.slice(le);ta.selectionStart=ls;ta.selectionEnd=ls+block.length;
+  }
+  ta.focus();
+  ta.dispatchEvent(new Event("input",{bubbles:true}));
+}
+function bulkMode(){
+  if(readOnly)return null;
+  if((tab==="plan"||tab==="ready")&&selVid.size)return "units";
+  if(tab==="log"&&selTid.size)return "tasks";
+  return null;
+}
+function renderBulk(){
+  var m=bulkMode(),bar=$("bulkBar");
+  if(!m){bar.hidden=true;bkArmed=false;return}
+  bar.hidden=false;
+  var n=m==="units"?selVid.size:selTid.size;
+  $("bkCount").textContent="Выбрано: "+n;
+  var others=data.projects.filter(function(x){return x.id!==activeProj});
+  $("bkMove").innerHTML='<option value="">Перенести в проект…</option>'+others.map(function(x){return '<option value="'+esc(x.id)+'">'+esc(x.name)+'</option>'}).join("");
+  $("bkMove").hidden=!others.length;
+  $("bkAp").innerHTML='<option value="">Согласование…</option>'+APS.map(function(x){return '<option value="'+x.id+'">'+x.g+" "+esc(x.name)+'</option>'}).join("");
+  $("bkType").innerHTML='<option value="">Формат…</option>'+typeOpts("");
+  var td=dkey(new Date()),ups=shoots().filter(function(y){return y.project===activeProj&&y.date>=td}).sort(function(a,b){return a.date<b.date?-1:1});
+  $("bkShoot").innerHTML='<option value="">В съёмку…</option>'+ups.map(function(y){return '<option value="'+esc(y.id)+'">'+esc(fmtDay(y.date)+(y.title?" · "+y.title:y.place?" · "+y.place:""))+'</option>'}).join("");
+  $("bkAp").hidden=$("bkType").hidden=m!=="units";
+  $("bkShoot").hidden=m!=="units"||!ups.length;
+  $("bkDone").hidden=m!=="tasks";
+  var del=$("bkDel");del.textContent=bkArmed?"Точно удалить "+n+"?":"Удалить";del.classList.toggle("armed",bkArmed);
+}
+function clearSel(){selVid.clear();selTid.clear();bkArmed=false}
 function apOf(v){return v.ap||(v.approved?"approved":"draft")}
 function applyAp(v,ap){v.ap=ap;v.approved=ap==="approved"}
 function unitType(v){return v.type||"reels"}
@@ -966,7 +1052,7 @@ function apInfo(a){return APS.filter(function(x){return x.id===a})[0]||APS[0]}
 function apPill(a){var i=apInfo(a);return '<span class="app '+i.id+'">'+i.g+" "+esc(i.name)+'</span>'}
 function apMark(e){
   var a=entryAp(e);if(!a)return "";
-  return a==="approved"?'<span class="apd ok" title="Согласовано">●</span>':'<span class="apd" title="'+esc(apInfo(a).name)+'">●</span>';
+  return '<span class="apd'+(a==="approved"?" ok":"")+'" title="'+esc(apInfo(a).name)+'">'+apInfo(a).g+'</span>';
 }
 function typeOpts(sel){return CONTENT_TYPES.map(function(c){return '<option value="'+c.id+'"'+(c.id===sel?" selected":"")+'>'+c.ic+" "+esc(c.name)+'</option>'}).join("")}
 function plural(n,a,b,c){var m=n%10,h=n%100;return (m===1&&h!==11)?a:(m>=2&&m<=4&&(h<12||h>14))?b:c}
@@ -1311,7 +1397,7 @@ function renderList(){
   }
   $("pList").innerHTML=dsh.map(shootItemHtml).join("")+list.map(function(e){
     var t=typeOf(e.type),s=statusOf(e.status);
-    var pre=readOnly?"":(e.text||"").split("\n")[0];
+    var pre=readOnly?"":(e.text||"").split("\n")[0].replace(/\*+/g,"").replace(/^#+\s*|^[-•]\s+/,"");
     var isSh=e.type==="shoot";
     return '<button class="item'+(e.id===editId?" cur":"")+'" data-id="'+esc(e.id)+'" style="--c:var(--c-'+t.id+')">'
       +(isSh?'<div class="top"><span>🎬 Съёмка'+(e.time?" · "+esc(e.time):"")+(e.place?" · "+esc(e.place):"")+(e.done?" · отснято":"")+'</span></div>'
@@ -1402,7 +1488,7 @@ function del(){
 /* ---------- print (A4, landscape) ---------- */
 var PAGE_RULE="@page{size:A4 landscape;margin:8mm}";
 var PRINT_CSS=
-".ps{--c-reels:#C4286A;--c-post:#2B63C9;--c-carousel:#B96F00;--c-stories:#7647C7;--c-other:#5B6B6E;--c-shoot:#B4532A;font-family:Onest,system-ui,Arial,sans-serif;color:#18272A;width:281mm;height:193mm;display:flex;flex-direction:column;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;overflow:hidden}"+
+".ps{--c-reels:#7048E8;--c-post:#1C7ED6;--c-carousel:#0C8599;--c-stories:#E8590C;--c-other:#5B6B6E;--c-shoot:#2F9E44;font-family:Onest,system-ui,Arial,sans-serif;color:#18272A;width:281mm;height:193mm;display:flex;flex-direction:column;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;overflow:hidden}"+
 ".ps *{box-sizing:border-box}"+
 ".ps-head{display:flex;justify-content:space-between;align-items:center;height:14mm;flex:none;gap:6mm}"+
 ".ps-title{font-size:26pt;font-weight:700;letter-spacing:-.01em;line-height:1}"+
@@ -1676,10 +1762,11 @@ function exportData(){
 }
 
 /* ---------- tabs: plan / shoots / ready ---------- */
+function fmtText(t){return '<div class="md sm">'+mdLite(t)+'</div>'}
 function mdLite(src){
   var lines=String(src||"").split("\n"),out=[],inList=false;
   function inline(t){
-    return esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+    return esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/(^|[\s(«])\*([^*\n]+?)\*(?=$|[\s).,!?:;»])/g,"$1<i>$2</i>").replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
   }
   lines.forEach(function(l){
     var m;
@@ -1722,6 +1809,7 @@ function renderView(){
   if(tab==="ready")renderBoard();
   if(tab==="report")renderReport();
   if(tab==="log")renderLog();
+  renderBulk();
 }
 function renderPlan(){
   var p=curProject();if(!p)return;
@@ -1819,7 +1907,7 @@ function shootCard(x){
   if(isOpen){
     h+='<div class="shc-b">';
     if(x.imp)h+='<div class="need-line">'+(x.impDone?"✓ решено: ":"❗ Нужно решить: ")+esc(x.imp)+'</div>';
-    if(x.notes)h+='<div class="vr-desc">'+esc(x.notes)+'</div>';
+    if(x.notes)h+=fmtText(x.notes);
     if(!readOnly&&repFor!==x.id)h+='<div class="vc-btns"><button class="btn sm" type="button" data-act="edit">Изменить съёмку</button><button class="btn sm'+(past&&!rp?" primary":"")+'" type="button" data-act="report">'+(rp?"Изменить отчёт":"Отчёт после съёмки")+'</button></div>';
     if(repFor===x.id)h+=reportForm(x);else if(rp)h+=reportView(x);
     h+='<div class="vl">'+(vs.length?vs.map(vRow).join(""):'<div class="empty" style="padding:10px 12px">'+(readOnly?"Ролики пока не добавлены.":"Добавь ролики, которые планируем снять.")+'</div>')+'</div>';
@@ -1834,11 +1922,11 @@ function vRow(v){
   if(o){
     h+='<div class="vr-b">';
     if(readOnly){
-      h+=v.desc?'<div class="vr-desc">'+esc(v.desc)+'</div>':'<div class="hint">Описания пока нет.</div>';
+      h+=v.desc?fmtText(v.desc):'<div class="hint">Описания пока нет.</div>';
       if(st==="dropped"&&v.reason)h+='<div class="hint warn">Причина отмены: '+esc(v.reason)+'</div>';
     }else{
       h+='<input type="text" class="ve-title" value="'+esc(v.title||"")+'" aria-label="Название ролика">'
-        +'<textarea class="ve-desc" rows="4" placeholder="Сценарий или описание: что в кадре, текст, хук">'+esc(v.desc||"")+'</textarea>'
+        +fmtBarHtml()+'<textarea class="ve-desc" rows="4" placeholder="Сценарий или описание: что в кадре, текст, хук">'+esc(v.desc||"")+'</textarea>'
         +'<label>Согласование<select class="ve-ap">'+APS.map(function(x){return '<option value="'+x.id+'"'+(x.id===apOf(v)?" selected":"")+'>'+x.g+" "+esc(x.name)+'</option>'}).join("")+'</select></label>'
         +(st==="dropped"&&v.reason?'<div class="hint warn">Отменён: '+esc(v.reason)+'</div>':"")
         +'<div class="vc-btns"><button class="btn sm primary" type="button" data-act="vsave">Сохранить</button><button class="btn sm danger" type="button" data-act="vdel">Удалить ролик</button></div>';
@@ -1861,7 +1949,7 @@ function reportForm(x){
       +'<input type="text" class="rp-why" placeholder="Почему не сняли (клиент это увидит)" value="'+esc(pr.reason||"")+'"'+(r==="shot"?" hidden":"")+'></div>';
   }).join("");
   return '<div class="rep"><h4>Отчёт после съёмки</h4>'+rows
-    +'<label>Комментарий к съёмке<textarea class="rp-note" rows="2" placeholder="Как прошло, что важно знать">'+esc((rp&&rp.note)||"")+'</textarea></label>'
+    +'<label>Комментарий к съёмке'+fmtBarHtml()+'<textarea class="rp-note" rows="2" placeholder="Как прошло, что важно знать">'+esc((rp&&rp.note)||"")+'</textarea></label>'
     +'<div class="vc-btns"><button class="btn sm primary" type="button" data-act="repsave">Сохранить отчёт</button><button class="btn sm" type="button" data-act="repx">Отмена</button></div></div>';
 }
 function reportView(x){
@@ -1870,7 +1958,7 @@ function reportView(x){
   if(not.length)h+='<ul class="rep-sum">'+not.map(function(r){
     return '<li><b>'+esc(r.title)+'</b>'+(r.approved?" (было согласовано)":"")+" — "+(r.r==="moved"?"перенесли на другую съёмку":"отменили")+(r.reason?": "+esc(r.reason):"")+'</li>';
   }).join("")+'</ul>';
-  if(rp.note)h+='<div class="vr-desc">'+esc(rp.note)+'</div>';
+  if(rp.note)h+=fmtText(rp.note);
   return h+'<div class="hint">Отчёт от '+esc(fmtDT(rp.at))+'</div></div>';
 }
 function saveReport(sid,box){
@@ -1914,14 +2002,15 @@ function vCard(v){
   var meta=[];
   if(x)meta.push("🎬 "+fmtDay(x.date));
   if(en)meta.push("📅 "+fmtDay(en.date));
-  var h='<div class="vc" data-vid="'+esc(v.id)+'"><button class="vc-t" type="button" data-act="ctoggle">'+typeOf(unitType(v)).ic+" "+esc(v.title||"Без названия")+'</button><div>'+apPill(apOf(v))+'</div>'+(meta.length?'<div class="vc-m">'+esc(meta.join(" · "))+'</div>':"")+(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"");
-  if(o)h+=v.desc?'<div class="vc-desc">'+esc(v.desc)+'</div>':'<div class="hint">Описания нет.</div>';
+  var h='<div class="vc" data-vid="'+esc(v.id)+'"><div class="vc-top">'+selCb("vid",v.id)+'<button class="vc-t" type="button" data-act="ctoggle">'+typeOf(unitType(v)).ic+" "+esc(v.title||"Без названия")+'</button></div><div>'+apPill(apOf(v))+'</div>'+(meta.length?'<div class="vc-m">'+esc(meta.join(" · "))+'</div>':"")+(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"");
+  if(o)h+=v.desc?fmtText(v.desc):'<div class="hint">Описания нет.</div>';
   if(!readOnly){
     var b=[];
     if(st==="plan"){if(!x)b.push('<button class="btn sm" type="button" data-act="assign">В съёмку</button>');b.push('<button class="btn sm" type="button" data-act="to-shot">В работу →</button>')}
     if(st==="shot"){b.push('<button class="btn sm" type="button" data-act="to-plan" title="Назад">←</button>');b.push('<button class="btn sm primary" type="button" data-act="to-ready">Смонтировано →</button>')}
     if(st==="ready"){b.push('<button class="btn sm" type="button" data-act="to-shot" title="Назад">←</button>');if(!en)b.push('<button class="btn sm primary" type="button" data-act="sched">📅 На дату</button>');b.push('<button class="btn sm" type="button" data-act="to-pub">Опубликовано ✓</button>')}
     if(st==="pub")b.push('<button class="btn sm" type="button" data-act="to-ready" title="Назад">←</button>');
+    b.push('<button class="btn sm danger" type="button" data-act="bdel" title="Удалить в корзину">Удалить</button>');
     h+='<div class="vc-btns">'+b.join("")+'</div>';
     if(vSched===v.id){
       var t=new Date();t.setDate(t.getDate()+1);
@@ -1974,9 +2063,9 @@ function lgItem(t){
   var isTask=t.kind==="task",open=isTask&&t.status!=="done";
   var meta=isTask?("поступила "+esc(fmtDay(t.got))+(t.due?" · срок "+esc(fmtDay(t.due))+' <span class="urg">('+esc(noticeText(t))+')</span>':"")+(t.status==="done"&&t.doneAt?" · сделано "+esc(fmtDay(t.doneAt)):"")):esc(fmtDay(t.got));
   return '<div class="lgi'+(isTask?(open?"":" done"):" note")+(openLog===t.id?" cur":"")+'" data-tid="'+esc(t.id)+'">'
-    +'<div class="lgi-h"><span>'+(isTask?"⚡":"📌")+'</span><b>'+esc(t.title)+'</b>'+(isTask?(open?'<span class="app changes">в работе</span>':'<span class="app approved">сделано</span>'):"")+'</div>'
+    +'<div class="lgi-h">'+selCb("tid",t.id)+'<span>'+(isTask?"⚡":"📌")+'</span><b>'+esc(t.title)+'</b>'+(isTask?(open?'<span class="app changes">в работе</span>':'<span class="app approved">сделано</span>'):"")+'</div>'
     +'<div class="lgi-m">'+meta+(t.who?" · "+esc(t.who):"")+'</div>'
-    +(t.comment?'<div class="lgi-c">'+esc(t.comment)+'</div>':"")
+    +(t.comment?fmtText(t.comment):"")
     +(readOnly?"":'<div class="vc-btns">'+(isTask?(open?'<button class="btn sm primary" type="button" data-act="done">Сделано ✓</button>':'<button class="btn sm" type="button" data-act="undo">Вернуть в работу</button>'):"")+'<button class="btn sm" type="button" data-act="edit">Изменить</button></div>')
     +'</div>';
 }
@@ -2052,17 +2141,17 @@ function uRow(v){
   var st=vStatus(v),t=typeOf(unitType(v)),o=!!openVid["u_"+v.id],a=apOf(v),x=shootById(v.shootId);
   var en=readOnly?(v.onDate?{date:v.onDate}:null):(v.entryId?entryById(v.entryId):null);
   var meta=[];if(x)meta.push("🎬 съёмка "+fmtDay(x.date));if(en)meta.push("📅 "+fmtDay(en.date));
-  var h='<div class="vr'+(o?" open":"")+'" data-vid="'+esc(v.id)+'"><button class="vr-h" type="button" data-act="utoggle"><span class="tw">▶</span><span class="ti">'+t.ic+'</span><span class="vr-n">'+esc(v.title||"Без названия")
+  var h='<div class="vr'+(o?" open":"")+'" data-vid="'+esc(v.id)+'"><div class="vr-hw">'+selCb("vid",v.id)+'<button class="vr-h" type="button" data-act="utoggle"><span class="tw">▶</span><span class="ti">'+t.ic+'</span><span class="vr-n">'+esc(v.title||"Без названия")
     +(meta.length?'<small style="display:block;color:var(--muted);font-weight:400;font-size:12px">'+esc(meta.join(" · "))+'</small>':"")
-    +(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"")+'</span>'+apPill(a)+(st!=="plan"?stPill(st):"")+'</button>';
+    +(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"")+'</span>'+apPill(a)+(st!=="plan"?stPill(st):"")+'</button></div>';
   if(o){
     h+='<div class="vr-b">';
     if(readOnly){
-      h+=v.desc?'<div class="vr-desc">'+esc(v.desc)+'</div>':'<div class="hint">Сценария пока нет.</div>';
+      h+=v.desc?fmtText(v.desc):'<div class="hint">Сценария пока нет.</div>';
     }else{
       h+='<div class="row2"><label>Название<input type="text" class="ue-title" value="'+esc(v.title||"")+'"></label><label>Формат<select class="ue-type">'+typeOpts(t.id)+'</select></label></div>'
         +'<label>Согласование<select class="ue-ap">'+APS.map(function(y){return '<option value="'+y.id+'"'+(y.id===a?" selected":"")+'>'+y.g+" "+esc(y.name)+'</option>'}).join("")+'</select></label>'
-        +'<label>Сценарий / текст<textarea class="ue-desc" rows="5" placeholder="Хук, что в кадре, текст, призыв">'+esc(v.desc||"")+'</textarea></label>'
+        +'<label>Сценарий / текст'+fmtBarHtml()+'<textarea class="ue-desc" rows="5" placeholder="Хук, что в кадре, текст, призыв">'+esc(v.desc||"")+'</textarea></label>'
         +'<label>Важно для клиента<input type="text" class="ue-imp" value="'+esc(v.imp||"")+'" placeholder="Например: согласовать модель"></label>'
         +'<div class="vc-btns"><button class="btn sm primary" type="button" data-act="usave">Сохранить</button>'
         +(st==="plan"&&!x?'<button class="btn sm" type="button" data-act="uassign">🎬 В съёмку</button>':"")
@@ -2083,7 +2172,15 @@ function renderUnits(){
   var list=mine.filter(function(v){return uF==="all"||apOf(v)===uF}).sort(function(a,b){
     var d=AP_ORDER[apOf(a)]-AP_ORDER[apOf(b)];if(d)return d;return (a.createdAt||0)-(b.createdAt||0);
   });
-  $("uList").innerHTML=list.length?list.map(uRow).join(""):'<div class="empty" style="padding:12px">'+(mine.length?"В этом фильтре пусто.":(readOnly?"Контент-план пока пуст.":"Добавь первую идею или вставь план из Notion."))+'</div>';
+  if(!list.length){$("uList").innerHTML='<div class="empty" style="padding:12px">'+(mine.length?"В этом фильтре пусто.":(readOnly?"Контент-план пока пуст.":"Добавь первую идею или вставь план из Notion."))+'</div>';return}
+  $("uList").innerHTML=CONTENT_TYPES.map(function(c){
+    var part=list.filter(function(v){return unitType(v)===c.id});
+    if(!part.length)return "";
+    var isOpen=uOpenFmt[c.id]!==false;
+    var w=part.filter(function(v){var q=apOf(v);return q==="review"||q==="changes"}).length;
+    return '<div class="fsec'+(isOpen?" open":"")+'"><button class="fmt-h" type="button" data-fmt-sec="'+c.id+'"><span class="tw">▶</span><span class="ti">'+c.ic+'</span><span class="fn">'+esc(c.name)+' <span class="fc">'+part.length+'</span></span>'+(w?'<span class="fw">⏳ ждут: '+w+'</span>':"")+'</button>'
+      +(isOpen?'<div class="vl">'+part.map(uRow).join("")+'</div>':"")+'</div>';
+  }).join("");
 }
 function addUnit(title,type,desc){
   var nid=uid(),now=Date.now(),pid=activeProj;
@@ -2292,7 +2389,7 @@ $("today").addEventListener("click",function(){var n=new Date();view=new Date(n.
 $("print").addEventListener("click",doPrint);
 $("mgr").addEventListener("click",openMgr);
 $("projSel").addEventListener("change",function(){
-  commitPlan();resetShootUI();openShoot=null;
+  commitPlan();resetShootUI();openShoot=null;clearSel();
   activeProj=this.value;lsSet(LS_PROJ,activeProj);render();
 });
 
@@ -2499,7 +2596,7 @@ $("tabs").addEventListener("click",function(ev){
   var b=ev.target.closest(".tab");if(!b)return;
   commitPlan();
   if($("panel").classList.contains("open")||$("pm").classList.contains("open")||$("pf").classList.contains("open"))closeAll();
-  tab=b.dataset.tab;
+  tab=b.dataset.tab;clearSel();
   if(!CLIENT)lsSet("kalendar:tab",tab);
   resetShootUI();
   renderView();
@@ -2579,6 +2676,10 @@ $("board").addEventListener("click",function(ev){
   var vid=c.dataset.vid,act=a.dataset.act;
   if(act==="ctoggle"){openVid["b_"+vid]=!openVid["b_"+vid];renderBoard();return}
   if(readOnly)return;
+  if(act==="bdel"){
+    if(!a.dataset.armed){a.dataset.armed="1";a.textContent="Точно удалить?";a.classList.add("armed");return}
+    delVideo(vid);return;
+  }
   if(act==="to-shot")setVStatus(vid,"shot");
   else if(act==="to-plan")setVStatus(vid,"plan");
   else if(act==="to-ready")setVStatus(vid,"ready");
@@ -2634,6 +2735,77 @@ function rpDatesChanged(){
 $("rpFrom").addEventListener("change",rpDatesChanged);
 $("rpTo").addEventListener("change",rpDatesChanged);
 $("rpPdf").addEventListener("click",doPrintReport);
+document.addEventListener("mousedown",function(ev){if(ev.target.closest&&ev.target.closest(".fmt button"))ev.preventDefault()});
+document.addEventListener("click",function(ev){
+  var b=ev.target.closest&&ev.target.closest(".fmt button");if(!b)return;
+  ev.preventDefault();
+  var ta=b.closest(".fmt").nextElementSibling;
+  if(ta&&ta.tagName==="TEXTAREA"&&!ta.readOnly)fmtApply(ta,b.dataset.fmt);
+});
+document.addEventListener("keydown",function(ev){
+  var ta=ev.target;if(!ta||ta.tagName!=="TEXTAREA"||ta.readOnly||!(ev.metaKey||ev.ctrlKey))return;
+  if(ev.code==="KeyB"){ev.preventDefault();fmtApply(ta,"b")}
+  else if(ev.code==="KeyI"){ev.preventDefault();fmtApply(ta,"i")}
+});
+document.addEventListener("change",function(ev){
+  var c=ev.target;if(!c||!c.classList||!c.classList.contains("sel-cb"))return;
+  var set=c.dataset.vid?selVid:selTid,id=c.dataset.vid||c.dataset.tid;
+  if(c.checked)set.add(id);else set.delete(id);
+  bkArmed=false;renderBulk();
+});
+$("bkClear").addEventListener("click",function(){clearSel();renderView()});
+$("bkAll").addEventListener("click",function(){
+  if(bulkMode()==="tasks"){tasks().forEach(function(t){if(t.project===activeProj)selTid.add(t.id)})}
+  else videos().forEach(function(v){if(v.project!==activeProj||vStatus(v)==="dropped")return;if(tab==="plan"&&uF!=="all"&&apOf(v)!==uF)return;selVid.add(v.id)});
+  bkArmed=false;renderView();
+});
+function bulkDoneMsg(n,what){toast(what+": "+n)}
+$("bkMove").addEventListener("change",function(){
+  var target=this.value;if(!target)return;
+  var m=bulkMode(),tp=project(target);
+  if(m==="units"){var ids=Array.from(selVid);
+    mutate(function(d){(d.videos||[]).forEach(function(v){if(ids.indexOf(v.id)<0)return;v.project=target;v.shootId=null;
+      if(v.entryId){var en=d.entries.filter(function(e){return e.id===v.entryId})[0];if(en)en.project=target}})});
+    bulkDoneMsg(ids.length,"Перенесено в «"+(tp?tp.name:"")+"»");
+  }else if(m==="tasks"){var tids=Array.from(selTid);
+    mutate(function(d){(d.tasks||[]).forEach(function(t){if(tids.indexOf(t.id)>=0)t.project=target})});
+    bulkDoneMsg(tids.length,"Перенесено в «"+(tp?tp.name:"")+"»");
+  }
+  clearSel();renderView();
+});
+$("bkAp").addEventListener("change",function(){
+  var ap=this.value;if(!ap)return;var ids=Array.from(selVid);
+  mutate(function(d){(d.videos||[]).forEach(function(v){if(ids.indexOf(v.id)>=0)applyAp(v,ap)})});
+  bulkDoneMsg(ids.length,"Статус «"+apInfo(ap).name+"»");this.value="";
+});
+$("bkType").addEventListener("change",function(){
+  var ty=this.value;if(!ty)return;var ids=Array.from(selVid);
+  mutate(function(d){(d.videos||[]).forEach(function(v){if(ids.indexOf(v.id)<0)return;v.type=ty;
+    if(v.entryId){var en=d.entries.filter(function(e){return e.id===v.entryId})[0];if(en)en.type=ty}})});
+  bulkDoneMsg(ids.length,"Формат «"+typeOf(ty).name+"»");this.value="";
+});
+$("bkShoot").addEventListener("change",function(){
+  var sid=this.value;if(!sid)return;var ids=Array.from(selVid);
+  mutate(function(d){(d.videos||[]).forEach(function(v){if(ids.indexOf(v.id)>=0&&(v.status||"plan")==="plan"){v.shootId=sid;v.status="plan"}})});
+  bulkDoneMsg(ids.length,"Добавлено в съёмку");this.value="";
+});
+$("bkDone").addEventListener("click",function(){
+  var tids=Array.from(selTid),today=dkey(new Date());
+  mutate(function(d){(d.tasks||[]).forEach(function(t){if(tids.indexOf(t.id)>=0&&t.kind==="task"){t.status="done";t.doneAt=t.doneAt||today}})});
+  bulkDoneMsg(tids.length,"Отмечено сделанным");
+});
+$("bkDel").addEventListener("click",function(){
+  if(!bkArmed){bkArmed=true;renderBulk();return}
+  var m=bulkMode();
+  if(m==="units"){var ids=Array.from(selVid);
+    mutate(function(d){(d.videos||[]).forEach(function(v){if(ids.indexOf(v.id)>=0)toTrash(d,"video",v)});d.videos=(d.videos||[]).filter(function(v){return ids.indexOf(v.id)<0})});
+    bulkDoneMsg(ids.length,"Удалено в корзину");
+  }else if(m==="tasks"){var tids=Array.from(selTid);
+    mutate(function(d){(d.tasks||[]).forEach(function(t){if(tids.indexOf(t.id)>=0)toTrash(d,"task",t)});d.tasks=(d.tasks||[]).filter(function(t){return tids.indexOf(t.id)<0})});
+    bulkDoneMsg(tids.length,"Удалено в корзину");
+  }
+  clearSel();renderView();
+});
 $("lgNewBtn").addEventListener("click",function(){openLgForm(null)});
 $("lgCancel").addEventListener("click",closeLgForm);
 $("lgSave").addEventListener("click",saveLg);
@@ -2668,6 +2840,8 @@ $("impGo").addEventListener("click",function(){
   toast("Добавлено карточек: "+cards.length);
 });
 $("uList").addEventListener("click",function(ev){
+  var fs=ev.target.closest("[data-fmt-sec]");
+  if(fs){var k=fs.dataset.fmtSec;uOpenFmt[k]=(uOpenFmt[k]===false);renderUnits();return}
   var a=ev.target.closest("[data-act]");if(!a)return;
   var row=a.closest(".vr");if(!row)return;
   var vid=row.dataset.vid,act=a.dataset.act;
