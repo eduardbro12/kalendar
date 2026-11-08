@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<base href="../"><script>window.__CLIENT__={"updated":1794166675024,"share":{"cal":true,"shootsCal":true,"plan":true,"shoot":true,"ready":true,"log":true,"report":true},"project":{"id":"5v4h3g0r572i","name":"Тетрамания","plan":"","planLink":"","color":"#0d2082","logo":"","siteStyle":null,"stats":null,"statsHist":[],"target":null},"entries":[{"id":"3w4a4w2g1n6s","date":"2026-10-28","type":"reels","status":"pub","title":"Парни кушают возле ресторана","time":""},{"id":"38132w381w4m","date":"2026-10-29","type":"reels","status":"work","title":"Видео на экраны","time":""}],"shoots":[],"tasks":[],"videos":[{"id":"0h590y27026f","title":"Reels доставка пакеты","desc":"","approved":true,"ap":"approved","type":"reels","status":"plan","shootId":"4m463u0d0o5z","createdAt":1793816696827}]};</script>
+<base href="../"><script>window.__CLIENT__={"updated":1794166723565,"share":{"cal":true,"shootsCal":true,"plan":true,"shoot":true,"ready":true,"log":true,"todo":false,"report":true},"project":{"id":"5v4h3g0r572i","name":"Тетрамания","plan":"","planLink":"","color":"#0d2082","logo":"","siteStyle":null,"stats":null,"statsHist":[],"target":null},"entries":[{"id":"3w4a4w2g1n6s","date":"2026-10-28","type":"reels","status":"pub","title":"Парни кушают возле ресторана","time":""},{"id":"38132w381w4m","date":"2026-10-29","type":"reels","status":"work","title":"Видео на экраны","time":""}],"shoots":[],"tasks":[],"todos":[],"videos":[{"id":"0h590y27026f","title":"Reels доставка пакеты","desc":"","approved":true,"ap":"approved","type":"reels","status":"plan","shootId":"4m463u0d0o5z","createdAt":1793816696827}]};</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Тетрамания — контент-план</title>
@@ -152,6 +152,33 @@ textarea{resize:vertical;min-height:120px;line-height:1.45}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translate(-50%,20px);background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:40;max-width:90vw}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 #printSheet{display:none}
+
+/* v12: tasks, reshoot */
+.td-add{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.td-add #tdTitle{flex:1;min-width:220px}
+.td-add input[type=date]{width:auto}
+.attn{border:1px solid color-mix(in srgb,var(--danger) 45%,var(--line));border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:color-mix(in srgb,var(--danger) 5%,var(--surface));max-width:860px}
+.attn-h{font-weight:650;font-size:14px}
+.attn-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px}
+.attn-r .at{flex:1;min-width:200px}
+.tdl{display:flex;flex-direction:column;gap:4px;max-width:860px}
+.tdg-h{font-size:13px;font-weight:650;color:var(--muted);margin-top:8px}
+.tdg-h.late{color:var(--danger)}
+.td{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface)}
+.td .td-cb{width:20px;height:20px;margin:0;flex:none;accent-color:var(--accent);cursor:pointer}
+.td .td-t{flex:1;min-width:0;overflow-wrap:anywhere;cursor:text}
+.td.done .td-t{text-decoration:line-through;color:var(--muted)}
+.td.late{border-color:var(--danger)}
+.td-d,.td-p{font-size:12px;color:var(--muted);white-space:nowrap}
+.td-p{border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.td-x{background:none;border:0;color:var(--muted);font-size:14px;padding:2px 6px}
+.td-x:hover{color:var(--danger)}
+.td-e{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.td-e input[type=text]{flex:1;min-width:180px}
+.td-e input{width:auto;font-size:14px;padding:6px 8px}
+.td-more{background:none;border:0;color:var(--muted);font-size:13.5px;font-weight:600;padding:6px 0;text-align:left}
+.rs-line{display:block;font-size:12.5px;color:#B96F00;font-weight:600;margin-top:2px}
+.rs-line.ok{color:var(--muted);font-weight:500}
 
 /* v11: formats grouping, text formatting, bulk */
 .fmts{display:flex;flex-direction:column;gap:10px}
@@ -498,6 +525,7 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
       <button class="tab" role="tab" data-tab="shoot">Съёмки<span class="cnt" id="cntShoot"></span></button>
       <button class="tab" role="tab" data-tab="ready">Производство<span class="cnt" id="cntReady"></span></button>
       <button class="tab" role="tab" data-tab="log">Хроника<span class="cnt" id="cntLog"></span></button>
+      <button class="tab" role="tab" data-tab="todo">Задачи<span class="cnt" id="cntTodo"></span></button>
       <button class="tab" role="tab" data-tab="report">Отчёт</button>
     </div>
     <span class="spacer"></span>
@@ -587,6 +615,21 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
     </div>
   </section>
 
+  <section id="vTodo" hidden>
+    <div class="sheet wide">
+      <div class="sheet-head"><h2>Задачи</h2><label class="chk share adm"><input type="checkbox" data-share="todo"> Показывать клиенту</label></div>
+      <div class="td-add adm">
+        <input id="tdTitle" type="text" autocomplete="off" placeholder="Что сделать, например: скинуть клиенту сценарии">
+        <div class="seg" id="tdWhen" role="group" aria-label="Когда"><button type="button" data-w="today">Сегодня</button><button type="button" data-w="tomorrow">Завтра</button><button type="button" data-w="none">Без даты</button></div>
+        <input id="tdDate" type="date" aria-label="Своя дата">
+        <button class="btn primary" id="tdAdd" type="button">Добавить</button>
+      </div>
+      <div class="seg adm" id="tdScope" role="group" aria-label="Какие задачи показывать" style="align-self:flex-start"><button type="button" data-s="proj">Этот проект</button><button type="button" data-s="all">Все проекты</button></div>
+      <div id="tdAttn" class="adm"></div>
+      <div id="tdList" class="tdl"></div>
+    </div>
+  </section>
+
   <section id="vLog" hidden>
     <div class="sheet wide">
       <div class="sheet-head"><h2>Хроника</h2><label class="chk share adm"><input type="checkbox" data-share="log"> Показывать клиенту</label></div>
@@ -621,7 +664,8 @@ a.btn{text-decoration:none;color:var(--ink);display:inline-flex;align-items:cent
             <div class="tg-line"><label class="tg-m">Свой план на <select id="tgMonth" aria-label="Месяц"></select></label><label class="chk share" style="margin:0"><input type="checkbox" id="tgOwn"> отличается от нормы</label></div>
             <div class="tg-grid" id="tgMonthGrid"></div>
           </div>
-          <label>Считать выполненным<select id="tgCount"><option value="pub">Только опубликованное</option><option value="ready">Готовое и опубликованное</option><option value="both">Показывать оба числа</option></select></label>
+          <div class="tg-row"><b>Как считать выполнение по форматам</b><div class="tg-grid" id="tgHow"></div><div class="hint">«По дате» — если дата публикации прошла, единица считается выполненной, отмечать ничего не нужно.</div></div>
+          <label>Считать выполненным (для форматов «по статусу»)<select id="tgCount"><option value="pub">Только опубликованное</option><option value="ready">Готовое и опубликованное</option><option value="both">Показывать оба числа</option></select></label>
         </div>
       </details>
       <div id="rpOut"></div>
@@ -741,7 +785,7 @@ var TYPES=[
   {id:"reels",name:"Reels",ic:"🎞"},
   {id:"post",name:"Пост",ic:"🖼"},
   {id:"carousel",name:"Карусель",ic:"🎠"},
-  {id:"stories",name:"Сторис",ic:"📱"},
+  {id:"stories",name:"Сторителлинг",ic:"📱"},
   {id:"other",name:"Другое",ic:"✏️"},
   {id:"shoot",name:"Съёмка",ic:"🎬"}
 ];
@@ -804,7 +848,7 @@ var readOnly=!!CLIENT;
 var busy={}, armedDel={}, pjMsg={};
 var autoTimer=null, AUTO_DELAY=window.__AUTO_DELAY||20000;
 var tab=CLIENT?"cal":(lsGet("kalendar:tab")||"cal");
-if(["cal","plan","shoot","ready","log","report"].indexOf(tab)<0)tab="cal";
+if(["cal","plan","shoot","ready","log","todo","report"].indexOf(tab)<0)tab="cal";
 var itEdit=null, itDelArmed=false, planTimer=null, planPid=null, planShownFor=null;
 var calMode=lsGet("kalendar:mode")||((window.matchMedia&&window.matchMedia("(max-width:700px)").matches)?"list":"month");
 var schedId=null, tokenExpAuto=null;
@@ -814,6 +858,7 @@ var PALETTES=[{id:"teal",name:"Бирюза",l:"#0E6B62",d:"#4FC3B3"},{id:"blue"
 var BGS={mint:{l:"#F2F4F3",off:"#F7F9F8",ln:"#DCE3E2",d:"#0F1719",offd:"#121C1E",sd:"#162123",lnd:"#26363A"},
   gray:{l:"#F3F4F6",off:"#F8F9FA",ln:"#E1E4E8",d:"#111317",offd:"#16181D",sd:"#1B1E23",lnd:"#2B2F36"},
   warm:{l:"#F5F3EF",off:"#FAF8F5",ln:"#E5E0D7",d:"#15130F",offd:"#1B1814",sd:"#201D18",lnd:"#332E26"}};
+var vAssignRe=false, tdWhen="today", tdScope=lsGet("kalendar:tdscope")||"proj", tdEdit=null, tdShowDone=false;
 var uOpenFmt={}, selVid=new Set(), selTid=new Set(), bkArmed=false;
 var uF="all", uAct=null, lgEdit=null, lgKindSel="task", openLog=null;
 var openShoot=null, openVid={}, shEdit=null, repFor=null, dropOpen=false, vSched=null, vAssign=null;
@@ -962,9 +1007,12 @@ function planProgress(p,from,to){
   var tg=targetFor(p,from,to),mode=targetOf(p).count;
   var ents=data.entries.filter(function(e){return e.project===p.id&&e.type!=="shoot"&&e.date>=from&&e.date<=to});
   var rows=[],T=0,P=0,R=0;
+  var byF=(p.target&&p.target.byFmt)||{},tdy=dkey(new Date());
   CONTENT_TYPES.forEach(function(c){
+    var how=howCount(byF,c.id);
+    if(how==="skip")return;
     var need=tg[c.id]||0,pub=0,rdy=0;
-    ents.forEach(function(e){if(e.type!==c.id)return;if(e.status==="pub"){pub++;rdy++}else if(e.status==="ready")rdy++});
+    ents.forEach(function(e){if(e.type!==c.id)return;if(how==="date"){if(e.date<=tdy){pub++;rdy++}return}if(e.status==="pub"){pub++;rdy++}else if(e.status==="ready")rdy++});
     if(!need)return;
     rows.push({c:c,need:need,pub:pub,rdy:rdy});T+=need;P+=Math.min(pub,need);R+=Math.min(rdy,need);
   });
@@ -1043,6 +1091,15 @@ function renderBulk(){
   var del=$("bkDel");del.textContent=bkArmed?"Точно удалить "+n+"?":"Удалить";del.classList.toggle("armed",bkArmed);
 }
 function clearSel(){selVid.clear();selTid.clear();bkArmed=false}
+function howCount(byF,id){return (byF&&byF[id])||(id==="stories"?"date":"status")}
+function rOut(r,long){return r==="moved"?(long?"перенесли на другую съёмку":"перенесли"):r==="partial"?"снят частично, нужно доснять":r==="shot"?"снят":"отменили"}
+function reshootLine(v){
+  if(!v.reshoot)return "";
+  if(v.reshoot.done)return '<span class="rs-line ok">✓ досняли</span>';
+  var x=v.reshoot.to?shootById(v.reshoot.to):null;
+  return '<span class="rs-line">🔄 доснять'+(v.reshoot.note?": "+esc(v.reshoot.note):"")+(x?" · досъёмка "+esc(fmtDay(x.date)):"")+'</span>';
+}
+function todos(){return data.todos||(data.todos=[])}
 function apOf(v){return v.ap||(v.approved?"approved":"draft")}
 function applyAp(v,ap){v.ap=ap;v.approved=ap==="approved"}
 function unitType(v){return v.type||"reels"}
@@ -1072,7 +1129,7 @@ function migrate(d){
   });
   d.entries=(d.entries||[]).filter(function(e){return e.type!=="shoot"});
 }
-function shareOf(p){var s=(p&&p.share)||{};return {cal:s.cal!==false,shootsCal:s.shootsCal===true,plan:s.plan!==false,shoot:s.shoot!==false,ready:s.ready!==false,log:s.log!==false,report:s.report!==false}}
+function shareOf(p){var s=(p&&p.share)||{};return {cal:s.cal!==false,shootsCal:s.shootsCal===true,plan:s.plan!==false,shoot:s.shoot!==false,ready:s.ready!==false,log:s.log!==false,todo:s.todo===true,report:s.report!==false}}
 function purgeTrash(d){d.trash=(d.trash||[]).filter(function(t){return Date.now()-t.deletedAt<TRASH_DAYS*864e5})}
 function toTrash(d,kind,obj){purgeTrash(d);if(!d.trash.some(function(t){return t.obj.id===obj.id}))d.trash.push({kind:kind,obj:obj,deletedAt:Date.now()})}
 function cacheLocal(){lsSet(LS_DATA,JSON.stringify(data))}
@@ -1576,6 +1633,9 @@ function clientShoots(pid){
     return o;
   });
 }
+function clientTodos(pid){
+  return todos().filter(function(t){return t.project===pid}).map(function(t){return {id:t.id,title:t.title||"",date:t.date||"",done:!!t.done,doneAt:t.doneAt||0,createdAt:t.createdAt||0}});
+}
 function clientTasks(pid){
   return tasks().filter(function(t){return t.project===pid}).map(function(t){
     return {id:t.id,kind:t.kind,title:t.title||"",got:t.got||"",due:t.due||"",who:t.who||"",status:t.status||"open",doneAt:t.doneAt||"",comment:t.comment||"",createdAt:t.createdAt||0};
@@ -1584,6 +1644,7 @@ function clientTasks(pid){
 function clientVideos(pid){
   return videos().filter(function(v){return v.project===pid}).map(function(v){
     var o={id:v.id,title:v.title||"",desc:v.desc||"",approved:apOf(v)==="approved",ap:apOf(v),type:unitType(v),status:vStatus(v),shootId:v.shootId||null,createdAt:v.createdAt||0};
+    if(v.reshoot)o.reshoot={note:v.reshoot.note||"",to:v.reshoot.to||null,done:!!v.reshoot.done};
     if(v.imp)o.imp=v.imp;
     if(v.reason)o.reason=v.reason;
     var en=v.entryId?entryById(v.entryId):null;
@@ -1593,7 +1654,7 @@ function clientVideos(pid){
 }
 function clientSig(pid){
   var p=project(pid);
-  return djb(JSON.stringify([p?p.name:"",clientEntries(pid),p?(p.plan||""):"",p?(p.planLink||""):"",clientShoots(pid),clientVideos(pid),clientTasks(pid),shareOf(p),p?(p.color||""):"",p?(p.logo||""):"",p&&p.siteStyle&&p.siteUrl?[p.siteStyle.url,p.siteStyle.color,p.siteStyle.font&&p.siteStyle.font.name,(p.siteStyle.logo||"").length]:"",p&&p.statsHist&&p.statsHist.length?p.statsHist[p.statsHist.length-1]:"",p&&p.target?p.target:""]));
+  return djb(JSON.stringify([p?p.name:"",clientEntries(pid),p?(p.plan||""):"",p?(p.planLink||""):"",clientShoots(pid),clientVideos(pid),clientTasks(pid),clientTodos(pid),shareOf(p),p?(p.color||""):"",p?(p.logo||""):"",p&&p.siteStyle&&p.siteUrl?[p.siteStyle.url,p.siteStyle.color,p.siteStyle.font&&p.siteStyle.font.name,(p.siteStyle.logo||"").length]:"",p&&p.statsHist&&p.statsHist.length?p.statsHist[p.statsHist.length-1]:"",p&&p.target?p.target:""]));
 }
 function clientUrl(token){return siteBase()+"c/"+token+".html"}
 function clientPayload(pid){
@@ -1605,6 +1666,7 @@ function clientPayload(pid){
     entries:sh.cal?clientEntries(pid).filter(function(e){return e.type!=="shoot"||sh.shootsCal}):[],
     shoots:(sh.shoot||(sh.cal&&sh.shootsCal))?clientShoots(pid).map(function(x){if(!sh.shoot){delete x.report;delete x.notes}return x}):[],
     tasks:sh.log?clientTasks(pid):[],
+    todos:sh.todo?clientTodos(pid):[],
     videos:(sh.shoot||sh.ready||sh.plan)?clientVideos(pid).map(function(v){if(!sh.cal)delete v.onDate;return v}):[]};
 }
 async function buildClientHtml(pid){
@@ -1739,7 +1801,7 @@ function renderTrash(){
   if(!tr.length){$("pmTrash").innerHTML='<div class="hint">Корзина пуста. Удалённые записи, съёмки и ролики хранятся здесь '+TRASH_DAYS+' дней.</div>';return}
   $("pmTrash").innerHTML=tr.map(function(t){
     var o=t.obj,pr=project(o.project);
-    var kind=t.kind==="entry"?typeOf(o.type).name:t.kind==="video"?"ролик":t.kind==="shoot"?"съёмка":t.kind==="task"?"хроника":(o.kind==="shoot"?"съёмки":"готовый ролик");
+    var kind=t.kind==="entry"?typeOf(o.type).name:t.kind==="video"?"ролик":t.kind==="shoot"?"съёмка":t.kind==="task"?"хроника":t.kind==="todo"?"задача":(o.kind==="shoot"?"съёмки":"готовый ролик");
     return '<div class="tr"><span class="tr-t">'+esc(o.title||(t.kind==="shoot"?"Съёмка "+fmtDay(o.date):"Без названия"))+'<small>'+esc(kind)+(o.date?" · "+esc(fmtDay(o.date)):"")+(pr?" · "+esc(pr.name):"")+' · удалено '+esc(fmtDT(t.deletedAt))+'</small></span>'
       +'<button class="btn sm tr-back" data-id="'+esc(o.id)+'">Вернуть</button><button class="btn sm danger tr-kill" data-id="'+esc(o.id)+'">Удалить навсегда</button></div>';
   }).join("");
@@ -1802,6 +1864,9 @@ function renderView(){
   $("vVideos").hidden=tab!=="ready";
   $("vReport").hidden=tab!=="report";
   $("vLog").hidden=tab!=="log";
+  $("vTodo").hidden=tab!=="todo";
+  var tdy0=dkey(new Date()),dueN=todos().filter(function(t){return t.project===activeProj&&!t.done&&t.date&&t.date<=tdy0}).length;
+  $("cntTodo").textContent=dueN?String(dueN):"";
   var openTk=tasks().filter(function(t){return t.project===activeProj&&t.kind==="task"&&t.status!=="done"}).length;
   $("cntLog").textContent=openTk?String(openTk):"";
   if(tab==="plan"){renderPlan();renderUnits()}
@@ -1809,6 +1874,7 @@ function renderView(){
   if(tab==="ready")renderBoard();
   if(tab==="report")renderReport();
   if(tab==="log")renderLog();
+  if(tab==="todo")renderTodo();
   renderBulk();
 }
 function renderPlan(){
@@ -1849,7 +1915,7 @@ function fmtDay(k){
 function fmtDayW(k){var d=parseKey(k);return fmtDay(k)+", "+["вс","пн","вт","ср","чт","пт","сб"][d.getDay()]}
 function resetShootUI(){shEdit=null;repFor=null;vSched=null;vAssign=null;if($("shForm"))$("shForm").hidden=true;if($("shNewBtn")&&!readOnly)$("shNewBtn").hidden=false}
 function shootById(id){return id?shoots().filter(function(x){return x.id===id})[0]||null:null}
-function shootVideos(sid){return videos().filter(function(v){return v.shootId===sid}).sort(function(a,b){return (a.createdAt||0)-(b.createdAt||0)})}
+function shootVideos(sid){return videos().filter(function(v){return v.shootId===sid||(v.reshoot&&v.reshoot.to===sid)}).sort(function(a,b){return (a.createdAt||0)-(b.createdAt||0)})}
 function vStatusName(st){return st==="dropped"?"Отменён":(VST.filter(function(x){return x.id===st})[0]||VST[0]).name}
 function stPill(st){return '<span class="st st-'+st+'">'+esc(vStatusName(st))+'</span>'}
 function shootItemHtml(x){
@@ -1895,7 +1961,7 @@ function saveShootForm(){
 function shootCard(x){
   var today=dkey(new Date()),past=x.date<today,vs=shootVideos(x.id),isOpen=openShoot===x.id,rp=x.report;
   var badge;
-  if(rp){var sn=rp.results.filter(function(r){return r.r==="shot"}).length;badge='<span class="badge ok">снято '+sn+' из '+rp.results.length+'</span>'}
+  if(rp){var sn=rp.results.filter(function(r){return r.r==="shot"}).length,pn=rp.results.filter(function(r){return r.r==="partial"}).length;badge='<span class="badge ok">снято '+sn+(pn?' · доснять '+pn:"")+' из '+rp.results.length+'</span>'}
   else if(past)badge=readOnly?'<span class="badge">отчёт готовится</span>':'<span class="badge warn">нужен отчёт</span>';
   else badge='<span class="badge">запланирована</span>';
   if(x.imp&&!x.impDone)badge='<span class="badge warn">❗ нужно решение</span>'+badge;
@@ -1910,15 +1976,15 @@ function shootCard(x){
     if(x.notes)h+=fmtText(x.notes);
     if(!readOnly&&repFor!==x.id)h+='<div class="vc-btns"><button class="btn sm" type="button" data-act="edit">Изменить съёмку</button><button class="btn sm'+(past&&!rp?" primary":"")+'" type="button" data-act="report">'+(rp?"Изменить отчёт":"Отчёт после съёмки")+'</button></div>';
     if(repFor===x.id)h+=reportForm(x);else if(rp)h+=reportView(x);
-    h+='<div class="vl">'+(vs.length?vs.map(vRow).join(""):'<div class="empty" style="padding:10px 12px">'+(readOnly?"Ролики пока не добавлены.":"Добавь ролики, которые планируем снять.")+'</div>')+'</div>';
+    h+='<div class="vl">'+(vs.length?vs.map(function(v){return vRow(v,x.id)}).join(""):'<div class="empty" style="padding:10px 12px">'+(readOnly?"Ролики пока не добавлены.":"Добавь ролики, которые планируем снять.")+'</div>')+'</div>';
     if(!readOnly&&repFor!==x.id)h+='<div class="v-add"><input type="text" class="va-title" placeholder="Название ролика, например: Тренировка дня — пресс" autocomplete="off"><label class="chk share" style="margin:0"><input type="checkbox" class="va-appr"> согласовано</label><button class="btn sm primary" type="button" data-act="addv">Добавить ролик</button></div>';
     h+='</div>';
   }
   return h+'</div>';
 }
-function vRow(v){
+function vRow(v,sid){
   var st=vStatus(v),o=!!openVid[v.id];
-  var h='<div class="vr'+(o?" open":"")+'" data-vid="'+esc(v.id)+'"><button class="vr-h" type="button" data-act="vtoggle"><span class="tw">▶</span><span class="ti">'+typeOf(unitType(v)).ic+'</span><span class="vr-n">'+esc(v.title||"Без названия")+'</span>'+apPill(apOf(v))+stPill(st)+'</button>';
+  var h='<div class="vr'+(o?" open":"")+'" data-vid="'+esc(v.id)+'"><button class="vr-h" type="button" data-act="vtoggle"><span class="tw">▶</span><span class="ti">'+typeOf(unitType(v)).ic+'</span><span class="vr-n">'+esc(v.title||"Без названия")+reshootLine(v)+'</span>'+(sid&&v.reshoot&&v.reshoot.to===sid?'<span class="app review">🔄 досъёмка</span>':"")+apPill(apOf(v))+stPill(st)+'</button>';
   if(o){
     h+='<div class="vr-b">';
     if(readOnly){
@@ -1945,8 +2011,8 @@ function reportForm(x){
     var v=videos().filter(function(y){return y.id===id})[0],pr=prev[id]||{},title=v?v.title:(pr.title||"Ролик"),r=pr.r||"shot";
     var appr=v?v.approved:pr.approved;
     return '<div class="rep-row" data-vid="'+esc(id)+'"><span class="rn">'+esc(title)+(appr?' <span class="ap">✓ согласовано</span>':"")+'</span>'
-      +'<select class="rp-r" aria-label="Итог"><option value="shot"'+(r==="shot"?" selected":"")+'>✅ Снят</option><option value="moved"'+(r==="moved"?" selected":"")+'>⏸ Не сняли, переносим</option><option value="cancel"'+(r==="cancel"?" selected":"")+'>✖ Отменили</option></select>'
-      +'<input type="text" class="rp-why" placeholder="Почему не сняли (клиент это увидит)" value="'+esc(pr.reason||"")+'"'+(r==="shot"?" hidden":"")+'></div>';
+      +'<select class="rp-r" aria-label="Итог"><option value="shot"'+(r==="shot"?" selected":"")+'>✅ Снят</option><option value="moved"'+(r==="moved"?" selected":"")+'>⏸ Не сняли, переносим</option><option value="partial"'+(r==="partial"?" selected":"")+'>🔄 Снят частично, нужно доснять</option><option value="cancel"'+(r==="cancel"?" selected":"")+'>✖ Отменили</option></select>'
+      +'<input type="text" class="rp-why" placeholder="Почему не сняли или что доснять (клиент это увидит)" value="'+esc(pr.reason||"")+'"'+(r==="shot"?" hidden":"")+'></div>';
   }).join("");
   return '<div class="rep"><h4>Отчёт после съёмки</h4>'+rows
     +'<label>Комментарий к съёмке'+fmtBarHtml()+'<textarea class="rp-note" rows="2" placeholder="Как прошло, что важно знать">'+esc((rp&&rp.note)||"")+'</textarea></label>'
@@ -1954,9 +2020,10 @@ function reportForm(x){
 }
 function reportView(x){
   var rp=x.report,shot=rp.results.filter(function(r){return r.r==="shot"}),not=rp.results.filter(function(r){return r.r!=="shot"});
-  var h='<div class="rep"><h4>Отчёт: снято '+shot.length+' из '+rp.results.length+'</h4>';
+  var pnum=rp.results.filter(function(r){return r.r==="partial"}).length;
+  var h='<div class="rep"><h4>Отчёт: снято '+shot.length+(pnum?", доснять "+pnum:"")+' из '+rp.results.length+'</h4>';
   if(not.length)h+='<ul class="rep-sum">'+not.map(function(r){
-    return '<li><b>'+esc(r.title)+'</b>'+(r.approved?" (было согласовано)":"")+" — "+(r.r==="moved"?"перенесли на другую съёмку":"отменили")+(r.reason?": "+esc(r.reason):"")+'</li>';
+    return '<li><b>'+esc(r.title)+'</b>'+(r.approved?" (было согласовано)":"")+" — "+rOut(r.r,true)+(r.reason?": "+esc(r.reason):"")+'</li>';
   }).join("")+'</ul>';
   if(rp.note)h+=fmtText(rp.note);
   return h+'<div class="hint">Отчёт от '+esc(fmtDT(rp.at))+'</div></div>';
@@ -1976,10 +2043,19 @@ function saveReport(sid,box){
     y.report={at:now,note:note,results:res};
     res.forEach(function(r){
       var v=(d.videos||[]).filter(function(z){return z.id===r.vid})[0];if(!v)return;
-      if(v.shootId&&v.shootId!==sid)return;
-      if(r.r==="shot"){v.shootId=sid;if(!v.status||v.status==="plan"||v.status==="dropped")v.status="shot";delete v.reason}
-      else if(r.r==="moved"){v.shootId=null;v.status="plan";v.lastReason=r.reason}
-      else{v.shootId=sid;v.status="dropped";v.reason=r.reason}
+      var isRe=!!(v.reshoot&&v.reshoot.to===sid);
+      if(v.shootId&&v.shootId!==sid&&!isRe)return;
+      if(r.r==="shot"){
+        if(isRe){v.reshoot.done=true;v.reshoot.doneAt=now}else{v.shootId=sid;if(v.reshoot&&v.reshoot.from===sid&&!v.reshoot.to)delete v.reshoot}
+        if(!v.status||v.status==="plan"||v.status==="dropped")v.status="shot";delete v.reason;
+      }
+      else if(r.r==="partial"){
+        if(!isRe)v.shootId=sid;
+        if(!v.status||v.status==="plan"||v.status==="dropped")v.status="shot";
+        v.reshoot={note:r.reason,from:sid,to:null};delete v.reason;
+      }
+      else if(r.r==="moved"){if(isRe)v.reshoot.to=null;else{v.shootId=null;v.status="plan";v.lastReason=r.reason}}
+      else{if(isRe){v.reshoot.to=null;v.reshoot.cancel=r.reason}else{v.shootId=sid;v.status="dropped";v.reason=r.reason}}
     });
   });
   toast("Отчёт сохранён");
@@ -2002,11 +2078,12 @@ function vCard(v){
   var meta=[];
   if(x)meta.push("🎬 "+fmtDay(x.date));
   if(en)meta.push("📅 "+fmtDay(en.date));
-  var h='<div class="vc" data-vid="'+esc(v.id)+'"><div class="vc-top">'+selCb("vid",v.id)+'<button class="vc-t" type="button" data-act="ctoggle">'+typeOf(unitType(v)).ic+" "+esc(v.title||"Без названия")+'</button></div><div>'+apPill(apOf(v))+'</div>'+(meta.length?'<div class="vc-m">'+esc(meta.join(" · "))+'</div>':"")+(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"");
+  var h='<div class="vc" data-vid="'+esc(v.id)+'"><div class="vc-top">'+selCb("vid",v.id)+'<button class="vc-t" type="button" data-act="ctoggle">'+typeOf(unitType(v)).ic+" "+esc(v.title||"Без названия")+'</button></div><div>'+apPill(apOf(v))+'</div>'+(meta.length?'<div class="vc-m">'+esc(meta.join(" · "))+'</div>':"")+(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"")+reshootLine(v);
   if(o)h+=v.desc?fmtText(v.desc):'<div class="hint">Описания нет.</div>';
   if(!readOnly){
     var b=[];
     if(st==="plan"){if(!x)b.push('<button class="btn sm" type="button" data-act="assign">В съёмку</button>');b.push('<button class="btn sm" type="button" data-act="to-shot">В работу →</button>')}
+    if(st==="shot"&&v.reshoot&&!v.reshoot.done&&!v.reshoot.to)b.push('<button class="btn sm" type="button" data-act="rs-assign">🎬 На досъёмку</button>');
     if(st==="shot"){b.push('<button class="btn sm" type="button" data-act="to-plan" title="Назад">←</button>');b.push('<button class="btn sm primary" type="button" data-act="to-ready">Смонтировано →</button>')}
     if(st==="ready"){b.push('<button class="btn sm" type="button" data-act="to-shot" title="Назад">←</button>');if(!en)b.push('<button class="btn sm primary" type="button" data-act="sched">📅 На дату</button>');b.push('<button class="btn sm" type="button" data-act="to-pub">Опубликовано ✓</button>')}
     if(st==="pub")b.push('<button class="btn sm" type="button" data-act="to-ready" title="Назад">←</button>');
@@ -2056,6 +2133,82 @@ function delVideo(vid){
     d.videos=(d.videos||[]).filter(function(x){return x.id!==vid});
   });
   toast("Ролик удалён. Вернуть можно из корзины.");
+}
+
+/* ---------- personal tasks ---------- */
+function attnItems(all){
+  var today=dkey(new Date()),tm=dkey(new Date(Date.now()+864e5)),wk=dkey(new Date(Date.now()+7*864e5)),out=[];
+  var projs=all?data.projects:[curProject()];
+  projs.forEach(function(p){
+    if(!p)return;
+    shoots().forEach(function(x){
+      if(x.project!==p.id)return;
+      if(x.date<today&&!x.report)out.push({k:"rep:"+x.id,t:"Заполнить отчёт по съёмке "+fmtDay(x.date)+(x.title?" ("+x.title+")":""),p:p.id});
+      if(x.imp&&!x.impDone&&x.date>=today)out.push({k:"sdec:"+x.id,t:"Решить к съёмке "+fmtDay(x.date)+": "+x.imp,p:p.id});
+    });
+    var wait=videos().filter(function(v){return v.project===p.id&&vStatus(v)!=="dropped"&&(apOf(v)==="review"||apOf(v)==="changes")}).length;
+    if(wait)out.push({k:"ap:"+p.id,t:"Получить согласование: "+wait+" "+plural(wait,"карточка","карточки","карточек"),p:p.id});
+    data.entries.forEach(function(e){
+      if(e.project!==p.id||e.type==="shoot")return;
+      if((e.date===today||e.date===tm)&&e.status!=="ready"&&e.status!=="pub"&&howCount(p.target&&p.target.byFmt,e.type)!=="date")out.push({k:"pub:"+e.id,t:(e.date===today?"Сегодня":"Завтра")+" публикация «"+(e.title||typeOf(e.type).name)+"», а она ещё не готова",p:p.id});
+      if(e.imp&&!e.impDone&&e.date>=today&&e.date<=wk)out.push({k:"imp:"+e.id,t:"Вопрос клиенту к "+fmtDay(e.date)+": "+e.imp,p:p.id});
+    });
+    tasks().forEach(function(t){
+      if(t.project!==p.id||t.kind!=="task"||t.status==="done")return;
+      if(t.due&&t.due<=tm)out.push({k:"tk:"+t.id,t:"Срочно: "+t.title+" (срок "+fmtDay(t.due)+")",p:p.id});
+    });
+  });
+  var have={};todos().forEach(function(td){if(td.src&&!td.done)have[td.src]=1});
+  return out.filter(function(o){return !have[o.k]});
+}
+function tdRow(t,all,today){
+  var late=!t.done&&t.date&&t.date<today,pr=all?project(t.project):null;
+  if(tdEdit===t.id&&!readOnly){
+    return '<div class="td" data-id="'+esc(t.id)+'"><div class="td-e"><input type="text" class="td-ei" value="'+esc(t.title)+'" aria-label="Задача"><input type="date" class="td-ed" value="'+esc(t.date||"")+'" aria-label="Дата"><button class="btn sm primary" type="button" data-act="tsave">Сохранить</button><button class="btn sm" type="button" data-act="tcancel">Отмена</button></div></div>';
+  }
+  return '<div class="td'+(t.done?" done":"")+(late?" late":"")+'" data-id="'+esc(t.id)+'"><input type="checkbox" class="td-cb" aria-label="Выполнено"'+(t.done?" checked":"")+(readOnly?" disabled":"")+'>'
+    +'<span class="td-t"'+(readOnly?"":' data-act="tedit" title="Нажми, чтобы изменить"')+'>'+esc(t.title)+'</span>'
+    +(pr?'<span class="td-p">'+esc(pr.name)+'</span>':"")
+    +(t.date?'<span class="td-d">'+esc(fmtDay(t.date))+'</span>':"")
+    +(readOnly?"":'<button class="td-x" type="button" data-act="tdel" title="Удалить" aria-label="Удалить">✕</button>')+'</div>';
+}
+function renderTodo(){
+  var all=!CLIENT&&tdScope==="all",today=dkey(new Date()),tm=dkey(new Date(Date.now()+864e5)),wk=dkey(new Date(Date.now()+6*864e5));
+  if(!readOnly){
+    Array.prototype.forEach.call(document.querySelectorAll("#tdWhen button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.w===tdWhen))});
+    Array.prototype.forEach.call(document.querySelectorAll("#tdScope button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.s===tdScope))});
+    var at=attnItems(all);
+    $("tdAttn").innerHTML=at.length?'<div class="attn"><div class="attn-h">⚠️ Требует внимания</div>'+at.map(function(o){
+      var pr=all?project(o.p):null;
+      return '<div class="attn-r"><span class="at">'+esc(o.t)+(pr?' <span class="td-p">'+esc(pr.name)+'</span>':"")+'</span><button class="btn sm" type="button" data-k="'+esc(o.k)+'" data-p="'+esc(o.p)+'" data-t="'+esc(o.t)+'">+ в задачи</button></div>';
+    }).join("")+'</div>':"";
+  }
+  var list=todos().filter(function(t){return all||t.project===activeProj});
+  var open=list.filter(function(t){return !t.done}),done=list.filter(function(t){return t.done});
+  var groups=[
+    {h:"Просрочено",late:true,f:function(t){return t.date&&t.date<today}},
+    {h:"Сегодня",f:function(t){return t.date===today}},
+    {h:"Завтра",f:function(t){return t.date===tm}},
+    {h:"На этой неделе",f:function(t){return t.date>tm&&t.date<=wk}},
+    {h:"Позже",f:function(t){return t.date>wk}},
+    {h:"Без даты",f:function(t){return !t.date}}
+  ];
+  var h="";
+  groups.forEach(function(g){
+    var part=open.filter(g.f).sort(function(a,b){return (a.date||"")<(b.date||"")?-1:(a.date||"")>(b.date||"")?1:(a.createdAt||0)-(b.createdAt||0)});
+    if(!part.length)return;
+    h+='<div class="tdg-h'+(g.late?" late":"")+'">'+g.h+" · "+part.length+'</div>'+part.map(function(t){return tdRow(t,all,today)}).join("");
+  });
+  if(!open.length)h+='<div class="empty">'+(readOnly?"Задач нет.":"Задач нет. Добавь первую сверху.")+'</div>';
+  if(done.length){
+    h+='<button class="td-more" type="button" data-act="tdone">'+(tdShowDone?"▾":"▸")+" Выполненные ("+done.length+')</button>';
+    if(tdShowDone)h+=done.sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0)}).slice(0,50).map(function(t){return tdRow(t,all,today)}).join("");
+  }
+  $("tdList").innerHTML=h;
+}
+function addTodo(title,date,pid,src){
+  var nid=uid(),now=Date.now();
+  mutate(function(d){d.todos=d.todos||[];if(!d.todos.some(function(x){return x.id===nid}))d.todos.push({id:nid,project:pid||activeProj,title:title,date:date||"",done:false,src:src||"",createdAt:now})});
 }
 
 /* ---------- chronology ---------- */
@@ -2143,7 +2296,7 @@ function uRow(v){
   var meta=[];if(x)meta.push("🎬 съёмка "+fmtDay(x.date));if(en)meta.push("📅 "+fmtDay(en.date));
   var h='<div class="vr'+(o?" open":"")+'" data-vid="'+esc(v.id)+'"><div class="vr-hw">'+selCb("vid",v.id)+'<button class="vr-h" type="button" data-act="utoggle"><span class="tw">▶</span><span class="ti">'+t.ic+'</span><span class="vr-n">'+esc(v.title||"Без названия")
     +(meta.length?'<small style="display:block;color:var(--muted);font-weight:400;font-size:12px">'+esc(meta.join(" · "))+'</small>':"")
-    +(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"")+'</span>'+apPill(a)+(st!=="plan"?stPill(st):"")+'</button></div>';
+    +(v.imp?'<span class="imp-line">! '+esc(v.imp)+'</span>':"")+reshootLine(v)+'</span>'+apPill(a)+(st!=="plan"?stPill(st):"")+'</button></div>';
   if(o){
     h+='<div class="vr-b">';
     if(readOnly){
@@ -2216,7 +2369,7 @@ function parseImport(txt,defType){
   }
   return cards.map(function(c){
     var t=c.title.slice(0,200),low=t.toLowerCase(),ty=defType;
-    if(/reels|рилс|ролик|видео/.test(low))ty="reels";else if(/карусел/.test(low))ty="carousel";else if(/сторис|stories/.test(low))ty="stories";else if(/пост/.test(low))ty="post";
+    if(/reels|рилс|ролик|видео/.test(low))ty="reels";else if(/карусел/.test(low))ty="carousel";else if(/сторис|сторител|stories/.test(low))ty="stories";else if(/пост/.test(low))ty="post";
     return {title:t,type:ty,desc:c.desc.join("\n").replace(/^\s*\n+|\n+\s*$/g,"")};
   }).filter(function(c){return c.title});
 }
@@ -2250,7 +2403,8 @@ function reportHtml(from,to,paper){
   var shotN=res.filter(function(o){return o.r.r==="shot"}).length;
   var movedN=res.filter(function(o){return o.r.r==="moved"}).length;
   var cancelN=res.filter(function(o){return o.r.r==="cancel"}).length;
-  var lost=res.filter(function(o){return o.r.approved&&o.r.r!=="shot"});
+  var lost=res.filter(function(o){return o.r.approved&&o.r.r!=="shot"&&o.r.r!=="partial"});
+  var partialN=res.filter(function(o){return o.r.r==="partial"}).length;
   var noRep=shs.filter(function(x){return !x.report&&x.date<today});
   var h='<div class="rpt'+(paper?" paper":"")+'">';
   h+='<div class="rp-head">'+(p.logo?'<img alt="" src="'+esc(p.logo)+'">':"")+'<h3>Отчёт · '+esc(p.name)+'<small>'+esc(fmtRange(from,to))+' · сформирован '+esc(fmtDT(Date.now()))+'</small></h3></div>';
@@ -2293,9 +2447,10 @@ function reportHtml(from,to,paper){
       var body="";
       if(x.report){
         var rr=x.report.results,sn=rr.filter(function(r){return r.r==="shot"}).length;
-        body+='<div>Снято <b>'+sn+'</b> из '+rr.length+'</div>';
+        var pn2=rr.filter(function(r){return r.r==="partial"}).length;
+        body+='<div>Снято <b>'+sn+'</b>'+(pn2?', доснять <b>'+pn2+'</b>':"")+' из '+rr.length+'</div>';
         var not=rr.filter(function(r){return r.r!=="shot"});
-        if(not.length)body+='<ul>'+not.map(function(r){return '<li>'+esc(r.title)+(r.approved?' <span class="rp-warn">(было согласовано)</span>':"")+" — "+(r.r==="moved"?"перенесли":"отменили")+(r.reason?": "+esc(r.reason):"")+'</li>'}).join("")+'</ul>';
+        if(not.length)body+='<ul>'+not.map(function(r){return '<li>'+esc(r.title)+(r.approved?' <span class="rp-warn">(было согласовано)</span>':"")+" — "+rOut(r.r)+(r.reason?": "+esc(r.reason):"")+'</li>'}).join("")+'</ul>';
         if(x.report.note)body+='<div class="rp-muted" style="margin-top:6px">'+esc(x.report.note)+'</div>';
       }else{
         var n=shootVideos(x.id).length;
@@ -2312,7 +2467,7 @@ function reportHtml(from,to,paper){
   }
   if(lost.length){
     h+='<div class="rp-block"><h4>Согласовано, но не снято</h4><div class="rp-tw"><table class="rp-table"><thead><tr><th>Ролик</th><th>Съёмка</th><th>Итог</th><th>Причина</th></tr></thead><tbody>'
-      +lost.map(function(o){return '<tr><td>'+esc(o.r.title)+'</td><td>'+esc(fmtDay(o.shoot.date))+'</td><td>'+(o.r.r==="moved"?"перенесли":"отменили")+'</td><td>'+esc(o.r.reason||"не указана")+'</td></tr>'}).join("")
+      +lost.map(function(o){return '<tr><td>'+esc(o.r.title)+'</td><td>'+esc(fmtDay(o.shoot.date))+'</td><td>'+rOut(o.r.r)+'</td><td>'+esc(o.r.reason||"не указана")+'</td></tr>'}).join("")
       +'</tbody></table></div></div>';
   }
   var ids={};res.forEach(function(o){ids[o.r.vid]=1});shs.forEach(function(x){shootVideos(x.id).forEach(function(v){ids[v.id]=1})});
@@ -2365,6 +2520,10 @@ function renderTarget(){
     if(document.activeElement!==i)i.value=own?(t.months[tgMonthSel][i.dataset.type]||""):"";
   });
   $("tgCount").value=t.count;
+  var hw=$("tgHow");
+  if(!hw.childElementCount)hw.innerHTML=CONTENT_TYPES.map(function(c){return '<label>'+c.ic+" "+esc(c.name)+'<select data-how="'+c.id+'"><option value="status">По статусу</option><option value="date">По дате</option><option value="skip">Не учитывать</option></select></label>'}).join("");
+  var bf=(p.target&&p.target.byFmt)||{};
+  Array.prototype.forEach.call(hw.querySelectorAll("select"),function(sl){sl.value=howCount(bf,sl.dataset.how)});
 }
 function setTarget(fn){
   var pid=activeProj;
@@ -2533,6 +2692,7 @@ $("pmBody").addEventListener("click",function(ev){
         d.shoots=(d.shoots||[]).filter(function(x){return x.project!==id});
         d.videos=(d.videos||[]).filter(function(x){return x.project!==id});
         d.tasks=(d.tasks||[]).filter(function(x){return x.project!==id});
+        d.todos=(d.todos||[]).filter(function(x){return x.project!==id});
         if(!d.projects.length)d.projects.push({id:uid(),name:"Основной проект",token:null});
       });
       if(activeProj===id){activeProj=data.projects[0].id;lsSet(LS_PROJ,activeProj)}
@@ -2698,12 +2858,14 @@ $("board").addEventListener("click",function(ev){
     });
     toast("Поставлено в календарь на "+fmtDay(date));
   }
-  else if(act==="assign"){vAssign=vid;vSched=null;renderBoard()}
+  else if(act==="assign"){vAssign=vid;vAssignRe=false;vSched=null;renderBoard()}
+  else if(act==="rs-assign"){vAssign=vid;vAssignRe=true;vSched=null;renderBoard()}
   else if(act==="assign-x"){vAssign=null;renderBoard()}
   else if(act==="assign-ok"){
     var sid=a.closest(".it-sched").querySelector(".as-sel").value;vAssign=null;
-    mutate(function(d){var y=(d.videos||[]).filter(function(z){return z.id===vid})[0];if(y){y.shootId=sid;y.status="plan"}});
-    toast("Добавлено в съёмку");
+    var re=vAssignRe;vAssignRe=false;
+    mutate(function(d){var y=(d.videos||[]).filter(function(z){return z.id===vid})[0];if(!y)return;if(re&&y.reshoot)y.reshoot.to=sid;else{y.shootId=sid;y.status="plan"}});
+    toast(re?"Добавлено на досъёмку":"Добавлено в съёмку");
   }
 });
 $("dropped").addEventListener("click",function(ev){
@@ -2735,6 +2897,44 @@ function rpDatesChanged(){
 $("rpFrom").addEventListener("change",rpDatesChanged);
 $("rpTo").addEventListener("change",rpDatesChanged);
 $("rpPdf").addEventListener("click",doPrintReport);
+$("tdWhen").addEventListener("click",function(ev){var b=ev.target.closest("button[data-w]");if(!b)return;tdWhen=b.dataset.w;$("tdDate").value="";renderTodo()});
+$("tdDate").addEventListener("change",function(){if(this.value){tdWhen="date";renderTodo()}});
+$("tdScope").addEventListener("click",function(ev){var b=ev.target.closest("button[data-s]");if(!b)return;tdScope=b.dataset.s;lsSet("kalendar:tdscope",tdScope);renderTodo()});
+$("tdAdd").addEventListener("click",function(){
+  var t=$("tdTitle").value.trim();if(!t){toast("Напиши задачу");$("tdTitle").focus();return}
+  var dt=tdWhen==="today"?dkey(new Date()):tdWhen==="tomorrow"?dkey(new Date(Date.now()+864e5)):tdWhen==="date"?$("tdDate").value:"";
+  addTodo(t,dt);$("tdTitle").value="";$("tdTitle").focus();toast("Задача добавлена");
+});
+$("tdTitle").addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();$("tdAdd").click()}});
+$("tdAttn").addEventListener("click",function(ev){
+  var b=ev.target.closest("button[data-k]");if(!b)return;
+  addTodo(b.dataset.t,dkey(new Date()),b.dataset.p,b.dataset.k);toast("Добавлено в задачи на сегодня");
+});
+$("tdList").addEventListener("change",function(ev){
+  var c=ev.target.closest(".td-cb");if(!c||readOnly)return;
+  var id=c.closest(".td").dataset.id,on=c.checked,now=Date.now();
+  mutate(function(d){var t=(d.todos||[]).filter(function(x){return x.id===id})[0];if(t){t.done=on;if(on)t.doneAt=now;else delete t.doneAt}});
+});
+$("tdList").addEventListener("click",function(ev){
+  var a=ev.target.closest("[data-act]");if(!a)return;
+  if(a.dataset.act==="tdone"){tdShowDone=!tdShowDone;renderTodo();return}
+  if(readOnly)return;
+  var row=a.closest(".td");if(!row)return;var id=row.dataset.id;
+  if(a.dataset.act==="tedit"){tdEdit=id;renderTodo();var i=document.querySelector('.td[data-id="'+id+'"] .td-ei');if(i)i.focus();return}
+  if(a.dataset.act==="tcancel"){tdEdit=null;renderTodo();return}
+  if(a.dataset.act==="tsave"){
+    var tt=row.querySelector(".td-ei").value.trim(),dd=row.querySelector(".td-ed").value;tdEdit=null;
+    if(!tt){renderTodo();return}
+    mutate(function(d){var t=(d.todos||[]).filter(function(x){return x.id===id})[0];if(t){t.title=tt;t.date=dd}});return;
+  }
+  if(a.dataset.act==="tdel"){
+    mutate(function(d){var t=(d.todos||[]).filter(function(x){return x.id===id})[0];if(t)toTrash(d,"todo",t);d.todos=(d.todos||[]).filter(function(x){return x.id!==id})});
+    toast("Задача удалена. Вернуть можно из корзины.");
+  }
+});
+$("tdList").addEventListener("keydown",function(ev){
+  if(ev.key==="Enter"&&ev.target.classList&&(ev.target.classList.contains("td-ei")||ev.target.classList.contains("td-ed"))){ev.preventDefault();var b=ev.target.closest(".td").querySelector('[data-act="tsave"]');if(b)b.click()}
+});
 document.addEventListener("mousedown",function(ev){if(ev.target.closest&&ev.target.closest(".fmt button"))ev.preventDefault()});
 document.addEventListener("click",function(ev){
   var b=ev.target.closest&&ev.target.closest(".fmt button");if(!b)return;
@@ -2864,6 +3064,7 @@ $("tgBox").addEventListener("change",function(ev){
   var el=ev.target;
   if(el.id==="tgMonth"){tgMonthSel=el.value;renderTarget();return}
   if(el.id==="tgCount"){var cv=el.value;setTarget(function(t){t.count=cv});return}
+  if(el.dataset&&el.dataset.how){var hty=el.dataset.how,hv=el.value;setTarget(function(t){t.byFmt=t.byFmt||{};t.byFmt[hty]=hv});return}
   if(el.id==="tgOwn"){
     var ym=tgMonthSel,on=el.checked;
     setTarget(function(t){if(on){t.months[ym]=Object.assign({},t.norm)}else delete t.months[ym]});
@@ -2905,6 +3106,7 @@ $("pmTrash").addEventListener("click",function(ev){
       else if(t.kind==="video"){d.videos=d.videos||[];if(!d.videos.some(function(e){return e.id===o.id}))d.videos.push(o)}
       else if(t.kind==="shoot"){d.shoots=d.shoots||[];if(!d.shoots.some(function(e){return e.id===o.id}))d.shoots.push(o)}
       else if(t.kind==="task"){d.tasks=d.tasks||[];if(!d.tasks.some(function(e){return e.id===o.id}))d.tasks.push(o)}
+      else if(t.kind==="todo"){d.todos=d.todos||[];if(!d.todos.some(function(e){return e.id===o.id}))d.todos.push(o)}
       else{d.items=d.items||[];if(!d.items.some(function(e){return e.id===o.id}))d.items.push(o)}
     });
     renderMgr();toast("Возвращено");
@@ -2985,7 +3187,8 @@ function applyClient(c){
     entries:(c.entries||[]).map(function(e){return Object.assign({project:p.id},e)}),
     shoots:(c.shoots||[]).map(function(x){return Object.assign({project:p.id},x)}),
     videos:(c.videos||[]).map(function(x){return Object.assign({project:p.id},x)}),
-    tasks:(c.tasks||[]).map(function(x){return Object.assign({project:p.id},x)})};
+    tasks:(c.tasks||[]).map(function(x){return Object.assign({project:p.id},x)}),
+    todos:(c.todos||[]).map(function(x){return Object.assign({project:p.id},x)})};
   activeProj=p.id;
   var ss=p.siteStyle||{},bcol=p.color||ss.color||"",blogo=p.logo||ss.logo||"";
   data.projects[0].logo=blogo;
